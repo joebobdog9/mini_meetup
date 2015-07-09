@@ -3,7 +3,9 @@ import {Promise} from 'es6-promise'
 import $ from 'jquery'
 import Backbone from 'backbone'
 import React from 'react'
-import {Nav} from 'react-bootstrap'
+import {Nav,Alert,
+	Search} 
+from 'react-bootstrap'
 
 
 class Navigation extends React.Component {
@@ -54,6 +56,9 @@ class Navigation extends React.Component {
             <button type="button" className="list-group-item navbutton">Past Events</button>
             <button type="button" className="list-group-item navbutton">Host An Event</button>
         </div>
+        	<Alert bsStyle='warning'>
+    			<strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
+  			</Alert>
      </div>
     )}
 }
@@ -79,6 +84,10 @@ export var meetRouter = Parse.Router.extend({
 	login: function(){
 		React.render(<login/>, document.querySelector('body'))
 	},
+
+	home: function(){
+		React.render(<Navigation/>, document.querySelector('body'))
+	}
 
 
  })
@@ -128,4 +137,3 @@ class Login extends React.Component {
 }
 
 // React.render(<Login/>, document.querySelector('body'))
-React.render(<Navigation/>, document.querySelector('body'))
