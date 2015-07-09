@@ -1,6 +1,5 @@
+@import "../bower_components/bootstrap/dist/css/bootstrap.min.css"
 
-@import "../bower_components/normalize-css/normalize.css";
-@import "../bower_components/typeplate-starter-kit/css/typeplate.css";
 
 /**
  * BOX-SIZING
@@ -95,3 +94,70 @@ img {
 /**
  * YOUR CODE HERE
  */
+ body{
+    background-color:  #ff726d;
+     }
+
+.mynavstyle{
+    background-color: #58585b;
+    postition: fixed;
+    
+}
+
+.navSearch{
+    padding-left: 9rem;
+    border: none;
+        .locationBar{
+            border: none;
+        }
+
+        .navButton{
+            border:none;
+        }
+}
+
+
+.myjumbotron{
+    background-color: #eceff1;
+    padding-top: 50px;
+
+        h1{
+            padding: 1rem;
+        }
+}
+
+.mylogin{
+    background-color: #ff726d;
+
+}
+
+
+.sidebar {
+    padding-top: 5rem;
+    position: fixed;
+    height: 100%;
+    left: 0;
+    background-color: #FF746E;
+   
+
+    
+        .navbutton{
+            color: white;
+            background-color: #ff4f48;
+            border-radius: 0px;
+            border-left: none;
+            border-right: none;
+            border-top: 1px dotted white;
+            border-bottom: 1px dotted white;
+            height: 7rem;
+
+        }
+
+        .navbutton:hover{
+              background-color: #FFF;
+              color: #FF746E;
+        }
+        .navbutton:active{
+            outline:none;
+        }
+}
