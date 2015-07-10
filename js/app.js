@@ -16,6 +16,8 @@ import {
 	Button,
 	Search} from 'react-bootstrap'
 
+var Parse = window.Parse
+
 
 class Navigation extends React.Component {
 	constructor(props) {
@@ -39,19 +41,111 @@ class Navigation extends React.Component {
   </ListGroup>
 
   <Navbar className="mynavstyle" brand={<a href="#" className="brand"> PetSet </a>}>
-  <Input className="navSearch"
-        type='search'
-        placeholder='Enter Your Location'/>
+  <Input  className="navSearch"
+          type='search'
+          placeholder='Enter Your Location'/>
    <Nav>
 
-  <Button bsSize="xsmall" className="searchButton"> Submit </Button>
+  <Button bsSize="xsmall" className="searchButton"> Submit  </Button>
         
     </Nav>
   </Navbar>
+  	
 </wrapper>
     )}
 }
 
+
+class LoginView extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = { error: 0 }
+	}
+
+	_signupOrLogin(e){
+		e.preventDefault()
+
+
+		
+		var u = new Parse.User(),
+			emailInput = this.refs.userEmail.getValue(),
+			passwordInput = this.refs.userPassword.getValue()
+
+
+		u.set({
+			email: emailInput,
+			password: passwordInput,
+			username: emailInput
+		})
+		
+		
+        u.signUp().then((user_object) => {
+        	window.location.hash = '#/navigation'
+    		})
+
+
+
+
+        u.signUp.fail((user_object) => {
+            var login = u.logIn()
+            login.then((e) => window.location.hash = '#/navigation')
+            login.fail((...args) => {
+                this.setState({error: this.state.error + 1 })
+            })
+        })
+    }
+
+	render(){
+
+			 var error = this.state.error ? (<p className="error-message">{this.state.error} try - password invalid</p>) : ''
+
+		return(
+
+			<div>
+
+				<i  className="fa fa-paw"></i>
+					<form onSubmit={(e) => this._signupOrLogin(e)}>
+    					<Input type='email'ref="userEmail"  placeholder='Enter Email' className='logEmail' />
+    					<Input type='password' ref="userPassword" placeholder='Enter Password' className='logPass' />
+    					<Button  type="submit" bsSize="small" className="joinButton" > Submit  </Button>
+    				</form>
+    		</div>
+    	
+
+    	)
+	}
+}
+
+class Home extends React.Component {
+	constructor(props) {
+		super(props)
+
+	}
+
+	render(){
+
+	return(
+<wrapper>
+	<div className="map">
+			
+    		<script type="text/javascript"
+      			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIxGAf76ExSioMkUh7OYAAjPgBJ-Fuj_Q">
+    		</script>
+    		<script type="text/javascript">
+     			 function initialize() {
+        			var mapOptions = {
+         			center: { lat: -34.397, lng: 150.644},
+          			zoom: 8
+        			};
+        			var map = new google.maps.Map(document.getElementById('map-canvas'),
+            			mapOptions);
+      				}
+      				google.maps.event.addDomListener(window, 'load', initialize);
+    		</script>
+	</div>
+	<div id="map-canvas"></div>
+</wrapper>
+		)}
 
 export var meetRouter = Parse.Router.extend({
     
@@ -62,7 +156,8 @@ export var meetRouter = Parse.Router.extend({
 
     routes: {
 	'navigation' : 'navigate',
-	'myLogin' : 'myLogin',
+	'login' : 'log',
+	'home' : 'home'
 	'*anything' : 'home'
 },
 
@@ -70,8 +165,8 @@ export var meetRouter = Parse.Router.extend({
 		React.render(<Navigation/>, document.querySelector('body'))
 	},
 
-	login: function(){
-		React.render(<login/>, document.querySelector('body'))
+	log: function(){
+		React.render(<LoginView/>, document.querySelector('body'))
 	},
 
 	home: function(){
@@ -82,47 +177,4 @@ export var meetRouter = Parse.Router.extend({
  })
 
 
-class Login extends React.Component {
-	constructor(props) {
-		super(props)
-	}
 
-	render(){
-
-		return(
-			<div class="mylogin">
-			    <div class="wrapper">
-			        <form class="form-horizontal">
-			            <div class="form-group">
-			                <div class="col-sm-10">
-			                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email"></input>
-			                </div>
-			            </div>
-			            <div class="form-group">
-			                
-			                <div class="col-sm-10">
-			                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password"></input>
-			                </div>
-			            </div>
-			            <div class="form-group">
-			                <div class="col-sm-offset-2 col-sm-10">
-			                    <div class="checkbox">
-			                        <label>
-			                            <input type="checkbox"> Remember me </input>
-			                        </label>
-			                    </div>
-			                </div>
-			            </div>
-			            <div class="form-group">
-			                <div class="col-sm-offset-2 col-sm-10">
-			                    <button type="submit" class="btn btn-default">Sign in</button>
-			                </div>
-			            </div>
-			        </form>
-			    </div>
-			   </div>
-		)
-	}
-}
-
-// React.render(<Login/>, document.querySelector('body'))
