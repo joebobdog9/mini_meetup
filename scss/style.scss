@@ -91,22 +91,47 @@
 img {
     max-width: 100%;
 }
-/**
- * YOUR CODE HERE
- */
- body{
-    background-color:  #ff726d;
-     }
 
-.mynavstyle{
-    background-color: #58585b;
-    postition: fixed;
-    
+/*
+ My Universal Bootstrap Style
+
+*/
+
+
+ input:focus {
+    outline:none;
+} 
+
+.form-control:focus{
+    border: none;
+    box-shadow: none;
 }
 
-.navSearch{
-    padding-left: 9rem;
+
+/*
+ My Code :)
+
+*/
+
+.mynavstyle{
+    background-color: #e6e7e8;
+    position: fixed;
     border: none;
+    width: 100%;
+    border-radius: 0px;  
+}
+
+
+.navSearch{
+    
+    padding-left: 2rem;
+    border: none;
+    color: #00bfa5;
+    max-width: 350px;
+    max-height: 100px;
+    font-style: italic;
+
+
         .locationBar{
             border: none;
         }
@@ -116,46 +141,49 @@ img {
         }
 }
 
+.searchButton{
+    max-width: 100px;
+    max-height: 25px;
+    background-color: #00bfa5;
+    color: white;
+    border: none;
 
-.myjumbotron{
-    background-color: #eceff1;
-    padding-top: 50px;
-
-        h1{
-            padding: 1rem;
-        }
 }
 
-.mylogin{
-    background-color: #ff726d;
-
+.searchButton:hover{
+    background-color:#66d9c9;
 }
 
 
 .sidebar {
-    padding-top: 5rem;
+    padding-top: 10rem;
     position: fixed;
     height: 100%;
     left: 0;
-    background-color: #FF746E;
+    background-color: #66d9c9 ;
    
 
     
         .navbutton{
             color: white;
-            background-color: #ff4f48;
+            background-color: #00bfa5;
             border-radius: 0px;
             border-left: none;
             border-right: none;
             border-top: 1px dotted white;
             border-bottom: 1px dotted white;
             height: 7rem;
+            font-weight: bold;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-align: center;
+
 
         }
 
         .navbutton:hover{
               background-color: #FFF;
-              color: #FF746E;
+              color: #00bfa5;
         }
         .navbutton:active{
             outline:none;
