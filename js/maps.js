@@ -9,7 +9,7 @@ export class GoogleMapMarked extends React.Component {
 
   render() {
     return (
-        <div className="map-container"     style= {{height: 400}}>
+        <div className="map-container" >
            <GoogleMap
             apiKey ={'AIzaSyB8D-8rkwJQgKvGUP2Bm06T7ZK1AixAm-0'}
             center={[29.75043, -95.337157]}

@@ -112,10 +112,7 @@ img {
  My Code :)
 
 */
-.container{
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
+
 .mynavstyle{
     background-color: #e6e7e8;
     position: fixed;
@@ -247,8 +244,11 @@ font-size: 10rem;
     width: 50px;
 }
 
-.map-container{
-    height: 400px;
-    
 
+
+.map-container{
+    padding-left: 168px;
+    padding-top: 10rem;
+    height: 100vh;
 }
+

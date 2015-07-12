@@ -126,8 +126,9 @@ class Home extends React.Component {
 		
 		return(
 
-			<div>
+			<div className="homeView">
 				<Navigation/>
+				<GoogleMapMarked/>
 
 			 </div>
 
