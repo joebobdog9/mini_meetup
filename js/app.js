@@ -16,6 +16,8 @@ import {
 	Button,
 	Search} from 'react-bootstrap'
 
+import {GoogleMapMarked} from './maps.js'
+
 var Parse = window.Parse
 
 
@@ -28,9 +30,8 @@ class Navigation extends React.Component {
 
 		console.log('rendering')
 
-	return(
-	
-<wrapper>
+	return(	
+	<div className="navigationBars">
 
   <ListGroup className="sidebar">
     <ListGroupItem href='#link1' className="navbutton">Nearby Events</ListGroupItem>
@@ -40,18 +41,18 @@ class Navigation extends React.Component {
     <ListGroupItem href='#linkN' className="navbutton">Past Events</ListGroupItem>
   </ListGroup>
 
-  <Navbar className="mynavstyle" brand={<a href="#" className="brand"> PetSet </a>}>
+  <Navbar className="mynavstyle" brand={<a href="#" className="brand" img src="../images/petset.png"> </a>}>
   <Input  className="navSearch"
           type='search'
           placeholder='Enter Your Location'/>
-   <Nav>
+   <Nav>  <button type="button" className="searchButton"> Search! </button>
 
-  <Button bsSize="xsmall" className="searchButton"> Submit  </Button>
+ 
         
     </Nav>
   </Navbar>
   	
-</wrapper>
+	</div>
     )}
 }
 
@@ -117,35 +118,23 @@ class LoginView extends React.Component {
 }
 
 class Home extends React.Component {
-	constructor(props) {
+		constructor(props) {
 		super(props)
-
 	}
 
-	render(){
+	render() {
+		
+		return(
 
-	return(
-<wrapper>
-	<div className="map">
-			
-    		<script type="text/javascript"
-      			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIxGAf76ExSioMkUh7OYAAjPgBJ-Fuj_Q">
-    		</script>
-    		<script type="text/javascript">
-     			 function initialize() {
-        			var mapOptions = {
-         			center: { lat: -34.397, lng: 150.644},
-          			zoom: 8
-        			};
-        			var map = new google.maps.Map(document.getElementById('map-canvas'),
-            			mapOptions);
-      				}
-      				google.maps.event.addDomListener(window, 'load', initialize);
-    		</script>
-	</div>
-	<div id="map-canvas"></div>
-</wrapper>
-		)}
+			<div>
+				<Navigation/>
+
+			 </div>
+
+		)
+	}
+
+}
 
 export var meetRouter = Parse.Router.extend({
     
@@ -157,20 +146,20 @@ export var meetRouter = Parse.Router.extend({
     routes: {
 	'navigation' : 'navigate',
 	'login' : 'log',
-	'home' : 'home'
+	'home' : 'home',
 	'*anything' : 'home'
 },
 
-	navigate: function(){
-		React.render(<Navigation/>, document.querySelector('body'))
-	},
+	// navigate: function(){
+	// 	React.render(<Navigation/>, document.querySelector('wrapper'))
+	// },
 
 	log: function(){
-		React.render(<LoginView/>, document.querySelector('body'))
+		React.render(<LoginView/>, document.querySelector('.wrapper'))
 	},
 
 	home: function(){
-		React.render(<Navigation/>, document.querySelector('body'))
+		React.render(<Home/>, document.querySelector('.wrapper'))
 	}
 
 
