@@ -14,9 +14,16 @@ import {
 	ListGroupItem,
 	ListGroup,
 	Button,
-	Search} from 'react-bootstrap'
+	Search,
+	Textarea
+
+	} from 'react-bootstrap'
+
 
 import {GoogleMapMarked} from './maps.js'
+
+
+https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
 
 var Parse = window.Parse
 
@@ -41,14 +48,11 @@ class Navigation extends React.Component {
     <ListGroupItem href='#linkN' className="navbutton">Past Events</ListGroupItem>
   </ListGroup>
 
-  <Navbar className="mynavstyle" brand={<a href="#" className="brand" img src="../images/petset.png"> </a>}>
-  <Input  className="navSearch"
-          type='search'
-          placeholder='Enter Your Location'/>
-   <Nav>  <button type="button" className="searchButton"> Search! </button>
-
- 
-        
+  <Navbar className="mynavstyle" brand={<a href="#" className="brand" img src="./images/petset.png"> </a>}>
+  	<Input  className="navSearch" type='search'placeholder='Enter Your Location'/>
+  
+  	<Nav>  
+  		<button type="button" className="searchButton"> Search! </button>      
     </Nav>
   </Navbar>
   	
@@ -104,7 +108,7 @@ class LoginView extends React.Component {
 
 			<div>
 
-				<i  className="fa fa-paw"></i>
+					<div className="logLogo" img src='../images/petset.png'> </div>
 					<form onSubmit={(e) => this._signupOrLogin(e)}>
     					<Input type='email'ref="userEmail"  placeholder='Enter Email' className='logEmail' />
     					<Input type='password' ref="userPassword" placeholder='Enter Password' className='logPass' />
@@ -128,13 +132,34 @@ class Home extends React.Component {
 
 			<div className="homeView">
 				<Navigation/>
-				<GoogleMapMarked/>
+				<GoogleMapMarked userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
+
 
 			 </div>
 
 		)
 	}
 
+}
+
+class Host extends React.Component{
+		constructor(props) {
+		super(props)
+	}
+
+	render() {
+		
+		return(
+
+			<div className="host"> 
+    				<Input type='text' className="eventForm" placeholder='Event Name' />
+    				<Input type='text'  className="eventForm" placeholder='Event Location' />
+    				<Input type='text'  className="eventForm" placeholder='Event Date' />
+    				<Input type='textarea'  className="eventForm" placeholder='Enter your event description here...' />
+					<Button  type="submit" bsSize="small" className="eventButton" > Submit  </Button>
+			</div>
+		)
+	}
 }
 
 export var meetRouter = Parse.Router.extend({
@@ -148,19 +173,42 @@ export var meetRouter = Parse.Router.extend({
 	'navigation' : 'navigate',
 	'login' : 'log',
 	'home' : 'home',
+	'eventHost' : 'eventHost',
 	'*anything' : 'home'
 },
 
-	// navigate: function(){
-	// 	React.render(<Navigation/>, document.querySelector('wrapper'))
-	// },
 
 	log: function(){
 		React.render(<LoginView/>, document.querySelector('.wrapper'))
 	},
 
+	eventHost: function(){
+		React.render(<Host/>, document.querySelector('.wrapper'))
+	},
+
 	home: function(){
-		React.render(<Home/>, document.querySelector('.wrapper'))
+		document.querySelector('.wrapper').innerHTML=`<img src="./bower_components/svg-loaders/svg-loaders/puff.svg" />`
+		navigator.geolocation.getCurrentPosition(function(data){
+			console.log(data);
+			data.coords.latitude 
+			data.coords.longitude
+			React.render(<Home userLat={data.coords.latitude} userLong={data.coords.longitude}/>, document.querySelector('.wrapper'))
+		})
+		// getCurrentPosition(theSuccessFunction, theFailFunction){
+
+			//1 - does it's magic to get the geolocation...we ca't see this
+			// ...but we know it will execute a function and pass the position 
+			
+			//2 - if (successfulRequest) {  
+			//		theSucessFunction(position) )   <---we have to give it this function
+			//		} else {
+			//			theFailFunction(error)      <----we have to give it this one too!!
+			//	     }
+		
+	
+
+
+		
 	}
 
 

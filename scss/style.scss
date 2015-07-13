@@ -117,8 +117,8 @@ img {
     background-color: #e6e7e8;
     position: fixed;
     border-top: none;
-     border-left: none;
-     border-right: none;
+    border-left: none;
+    border-right: none;
     width: 100%;
     border-radius: 0px;  
     border-bottom: 1px solid #bbbdc0;
@@ -252,3 +252,35 @@ font-size: 10rem;
     height: 100vh;
 }
 
+.host{
+    padding-left: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: #66d9c9;
+
+    .eventForm{
+        border: 1px solid #66d9c9;
+        color:  #00695c;
+        max-width: 400px;
+    }
+
+    .eventButton{
+        
+        background-color: #00bfa5;
+        color:white;
+        border:none;
+    }
+
+    .eventButton:hover{
+        background-color: #fff;
+        color: #00695c;
+    }
+
+    .eventButton:active{
+        background-color: #66d9c9;
+        color: #00695c;
+    }
+
+}
+
+    
