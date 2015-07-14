@@ -108,12 +108,15 @@ img {
 }
 
 
+
+
 /*
  My Code :)
 
 */
 
 .mynavstyle{
+    padding-top: 2rem;
     background-color: #e6e7e8;
     position: fixed;
     border-top: none;
@@ -126,7 +129,7 @@ img {
 
 
 .navSearch{
-    
+  
     padding-left: 2rem;
     border: none;
     color: #00bfa5;
@@ -138,17 +141,16 @@ img {
         .locationBar{
             border: none;
         }
-
 }
 
 .searchButton{
     width: 75px;
-    height: 35px;
+    height: 25px;
     background-color: #00bfa5;
     color: white;
     border: none;
     border-radius: 5px;
-    display: inline-block;
+    
 }
 
 
@@ -159,7 +161,7 @@ img {
 
 
 .sidebar {
-    padding-top: 10rem;
+    padding-top: 9rem;
     position: fixed;
     height: 100%;
     left: 0;
@@ -193,7 +195,21 @@ img {
         }
 }
 
+.logBg{
+    padding-top: 10rem;
+}
+.logLogo{
+    background-image:url("../images/petset_logo.svg");
+    repeat: none;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    padding-top: 10rem;
+}
 
+.formLog{
+    margin: auto;
+}
 
 .logPass{
    margin-left: 200px;
@@ -213,13 +229,12 @@ img {
 
 }
 
-
-
 .joinButton{
     margin-left: 20rem;
     background-color: #00bfa5;
     color:white;
     border:none;
+
 }
 
 .joinButton:hover{
@@ -232,19 +247,6 @@ img {
       color: #00695c;
 }
 
-.fa-paw{
-margin-left: 50%;
-margin-top: 20%;
-color: #00bfa5;
-font-size: 10rem;
-}
-
-.myBrand{
-    height: 50px;
-    width: 50px;
-}
-
-
 
 .map-container{
     padding-left: 168px;
@@ -252,14 +254,33 @@ font-size: 10rem;
     height: 100vh;
 }
 
+.hostEvent{
+    width: 100vh;
+    height: 100vh;
+  
+}
+
 .host{
-    padding-left: 4rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    background-color: #66d9c9;
+    padding-left: 20rem;
+    padding-top: 20rem;
+    padding-bottom: 6rem;
+    background-color: #fff;
+    height: 100vh;
+    width: 2000px;
+    background-image:url("../images/petset_bg.svg");
+    background-size: cover;
+
+    .hostForm{
+        width: 500px;
+        background-color: #fff;
+        padding-top: 4rem;
+        padding-left: 4rem;
+        vertical-align: middle;
+
+    }
 
     .eventForm{
-        border: 1px solid #66d9c9;
+        border: 2px solid #66d9c9;
         color:  #00695c;
         max-width: 400px;
     }
@@ -272,7 +293,7 @@ font-size: 10rem;
     }
 
     .eventButton:hover{
-        background-color: #fff;
+        background-color: #00bfa5;
         color: #00695c;
     }
 
@@ -280,7 +301,11 @@ font-size: 10rem;
         background-color: #66d9c9;
         color: #00695c;
     }
+    .eventButton:focus{
+    outline:none;
+    background-color: #00bfa5;
 
+    }
 }
 
     

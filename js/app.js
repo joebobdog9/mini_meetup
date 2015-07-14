@@ -40,6 +40,7 @@ class Navigation extends React.Component {
 	return(	
 	<div className="navigationBars">
 
+
   <ListGroup className="sidebar">
     <ListGroupItem href='#link1' className="navbutton">Nearby Events</ListGroupItem>
     <ListGroupItem href='#link2' className="navbutton">Attending Events</ListGroupItem>
@@ -48,12 +49,9 @@ class Navigation extends React.Component {
     <ListGroupItem href='#linkN' className="navbutton">Past Events</ListGroupItem>
   </ListGroup>
 
-  <Navbar className="mynavstyle" brand={<a href="#" className="brand" img src="./images/petset.png"> </a>}>
-  	<Input  className="navSearch" type='search'placeholder='Enter Your Location'/>
-  
-  	<Nav>  
+  <Navbar className="mynavstyle" brand={<a href="#" className="brand" img src="../images/petset_150.gif"> </a>}>
+  	<Input  className="navSearch" type='text'placeholder='Enter Your Location'/>
   		<button type="button" className="searchButton"> Search! </button>      
-    </Nav>
   </Navbar>
   	
 	</div>
@@ -106,10 +104,9 @@ class LoginView extends React.Component {
 
 		return(
 
-			<div>
-
-					<div className="logLogo" img src='../images/petset.png'> </div>
-					<form onSubmit={(e) => this._signupOrLogin(e)}>
+			<div className="logBg">
+					<div className="logLogo"> </div>
+					<form className="formLog" onSubmit={(e) => this._signupOrLogin(e)}>
     					<Input type='email'ref="userEmail"  placeholder='Enter Email' className='logEmail' />
     					<Input type='password' ref="userPassword" placeholder='Enter Password' className='logPass' />
     					<Button  type="submit" bsSize="small" className="joinButton" > Submit  </Button>
@@ -141,6 +138,22 @@ class Home extends React.Component {
 	}
 
 }
+class EventListing extends React.Component{
+		constructor(props) {
+		super(props)
+	}
+
+	render() {
+		
+		return(
+
+			<div className="EventListing">
+				
+			</div>	
+
+		)
+	}
+}
 
 class Host extends React.Component{
 		constructor(props) {
@@ -151,13 +164,19 @@ class Host extends React.Component{
 		
 		return(
 
-			<div className="host"> 
-    				<Input type='text' className="eventForm" placeholder='Event Name' />
-    				<Input type='text'  className="eventForm" placeholder='Event Location' />
-    				<Input type='text'  className="eventForm" placeholder='Event Date' />
-    				<Input type='textarea'  className="eventForm" placeholder='Enter your event description here...' />
-					<Button  type="submit" bsSize="small" className="eventButton" > Submit  </Button>
-			</div>
+			<div className="hostEvent">
+				<Navigation/>
+				<div className="host"> 
+					<form className="hostForm">
+    					<Input type='text' className="eventForm" placeholder='Event Name' />
+    					<Input type='text'  className="eventForm" placeholder='Event Location' />
+    					<Input type='text'  className="eventForm" placeholder='Event Date' />
+    					<Input type='textarea'  className="eventForm" placeholder='Enter your event description here...' />
+						<Button  type="submit" bsSize="small" className="eventButton" > Post Event  </Button>
+					</form>
+				</div>
+			</div>	
+
 		)
 	}
 }
@@ -204,10 +223,6 @@ export var meetRouter = Parse.Router.extend({
 			//		} else {
 			//			theFailFunction(error)      <----we have to give it this one too!!
 			//	     }
-		
-	
-
-
 		
 	}
 
