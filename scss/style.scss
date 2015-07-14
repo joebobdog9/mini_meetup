@@ -262,7 +262,7 @@ img {
 
 .host{
     padding-left: 20rem;
-    padding-top: 20rem;
+    padding-top: 16rem;
     padding-bottom: 6rem;
     background-color: #fff;
     height: 100vh;
@@ -283,6 +283,29 @@ img {
         border: 2px solid #66d9c9;
         color:  #00695c;
         max-width: 400px;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    .eventDescription{
+        border: 2px solid #66d9c9;
+        color:  #00695c;
+        width: 400px;
+        height: 200px;
+        border-radius: 5px;
+        padding: 5px;
+        margin-top: 1rem;
+        
+    }
+
+    .eventDate{
+        border: 2px solid #66d9c9;
+        color:  #999;
+        font-family: helvetica;
+
+
     }
 
     .eventButton{
@@ -290,6 +313,7 @@ img {
         background-color: #00bfa5;
         color:white;
         border:none;
+        margin-left: 1rem;
     }
 
     .eventButton:hover{

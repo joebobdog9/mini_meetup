@@ -18,7 +18,9 @@ import {
 	Textarea
 
 	} from 'react-bootstrap'
+import {Post, Post} from './Post'
 
+window.Post = Post
 
 import {GoogleMapMarked} from './maps.js'
 
@@ -42,7 +44,7 @@ class Navigation extends React.Component {
 
 
   <ListGroup className="sidebar">
-    <ListGroupItem href='#link1' className="navbutton">Nearby Events</ListGroupItem>
+    <ListGroupItem href='#home' className="navbutton">Nearby Events</ListGroupItem>
     <ListGroupItem href='#link2' className="navbutton">Attending Events</ListGroupItem>
     <ListGroupItem href='#linkN' className="navbutton">Hosting Events</ListGroupItem>
     <ListGroupItem href='#linkN' className="navbutton">Host An Event</ListGroupItem>
@@ -68,8 +70,6 @@ class LoginView extends React.Component {
 	_signupOrLogin(e){
 		e.preventDefault()
 
-
-		
 		var u = new Parse.User(),
 			emailInput = this.refs.userEmail.getValue(),
 			passwordInput = this.refs.userPassword.getValue()
@@ -85,8 +85,6 @@ class LoginView extends React.Component {
         u.signUp().then((user_object) => {
         	window.location.hash = '#/navigation'
     		})
-
-
 
 
         u.signUp.fail((user_object) => {
@@ -109,7 +107,7 @@ class LoginView extends React.Component {
 					<form className="formLog" onSubmit={(e) => this._signupOrLogin(e)}>
     					<Input type='email'ref="userEmail"  placeholder='Enter Email' className='logEmail' />
     					<Input type='password' ref="userPassword" placeholder='Enter Password' className='logPass' />
-    					<Button  type="submit" bsSize="small" className="joinButton" > Submit  </Button>
+    					<Button  type="submit" href='#home' bsSize="small" className="joinButton" > Submit  </Button>
     				</form>
     		</div>
     	
@@ -168,10 +166,11 @@ class Host extends React.Component{
 				<Navigation/>
 				<div className="host"> 
 					<form className="hostForm">
-    					<Input type='text' className="eventForm" placeholder='Event Name' />
-    					<Input type='text'  className="eventForm" placeholder='Event Location' />
-    					<Input type='text'  className="eventForm" placeholder='Event Date' />
-    					<Input type='textarea'  className="eventForm" placeholder='Enter your event description here...' />
+    					<input type='text' className="eventForm" placeholder="Event Name" /> <br/>
+    					<input type='text' className="eventForm" placeholder="Event Location" /><br/>
+    					<Input type='textarea' className="eventDescription" placeholder='Enter your description here...' /><br/>
+    					<input type="date" className="eventDate"/>
+    					
 						<Button  type="submit" bsSize="small" className="eventButton" > Post Event  </Button>
 					</form>
 				</div>
@@ -180,6 +179,32 @@ class Host extends React.Component{
 		)
 	}
 }
+
+// class PostView extends React.Component{
+// 		constructor(props) {
+// 		super(props)
+// 		 this.rerender = () => {
+//             console.log('trying to save')
+//             this.props.data.save()
+//             this.forceUpdate()
+// 	}
+// 		_saveTitle(){
+//         	var text = React.findDOMNode(this.refs.title).innerText
+//         	this.props.data.set('title', text)
+//     },
+
+//     	_saveDescription(){
+//         	var text = React.findDOMNode(this.refs.description).innerText
+//         	this.props.data.set('title', text)
+//     }
+
+
+// 	render() {
+		
+// 		return(
+			
+// 		)
+// 	}
 
 export var meetRouter = Parse.Router.extend({
     
