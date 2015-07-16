@@ -49,7 +49,7 @@ class Navigation extends React.Component {
     <ListGroupItem href='#/home' className="navbutton">Nearby Events</ListGroupItem>
     <ListGroupItem href='#/link2' className="navbutton">Attending Events</ListGroupItem>
     <ListGroupItem href='#/linkN' className="navbutton">Hosting Events</ListGroupItem>
-    <ListGroupItem href='#/eventHost' className="navbutton">Host An Event</ListGroupItem>
+    <ListGroupItem href='#/postEvent' className="postEvent">Host An Event</ListGroupItem>
     <ListGroupItem href='#/linkN' className="navbutton">Past Events</ListGroupItem>
   </ListGroup>
 
