@@ -15,18 +15,20 @@ import {
 	ListGroup,
 	Button,
 	Search,
-	Textarea
-
+	Textarea,
+	PageHeader
 	} from 'react-bootstrap'
-import {Post, Post} from './Post'
 
-window.Post = Post
+import {PetEvent, 
+	    PetEventGroup} from './Post.js'
 
 import {GoogleMapMarked} from './maps.js'
 
 
-https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
+// https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
 
+Parse = window.Parse
+Parse.$ = $
 var Parse = window.Parse
 
 
@@ -44,11 +46,11 @@ class Navigation extends React.Component {
 
 
   <ListGroup className="sidebar">
-    <ListGroupItem href='#home' className="navbutton">Nearby Events</ListGroupItem>
-    <ListGroupItem href='#link2' className="navbutton">Attending Events</ListGroupItem>
-    <ListGroupItem href='#linkN' className="navbutton">Hosting Events</ListGroupItem>
-    <ListGroupItem href='#linkN' className="navbutton">Host An Event</ListGroupItem>
-    <ListGroupItem href='#linkN' className="navbutton">Past Events</ListGroupItem>
+    <ListGroupItem href='#/home' className="navbutton">Nearby Events</ListGroupItem>
+    <ListGroupItem href='#/link2' className="navbutton">Attending Events</ListGroupItem>
+    <ListGroupItem href='#/linkN' className="navbutton">Hosting Events</ListGroupItem>
+    <ListGroupItem href='#/eventHost' className="navbutton">Host An Event</ListGroupItem>
+    <ListGroupItem href='#/linkN' className="navbutton">Past Events</ListGroupItem>
   </ListGroup>
 
   <Navbar className="mynavstyle" brand={<a href="#" className="brand" img src="../images/petset_150.gif"> </a>}>
@@ -82,19 +84,15 @@ class LoginView extends React.Component {
 		})
 		
 		
-        u.signUp().then((user_object) => {
-        	window.location.hash = '#/navigation'
+        u.signUp()
+        	.then((user_object) => {
+        		window.location.hash = '#/navigation'
     		})
-
-
-        u.signUp.fail((user_object) => {
-            var login = u.logIn()
-            login.then((e) => window.location.hash = '#/navigation')
-            login.fail((...args) => {
-                this.setState({error: this.state.error + 1 })
+    		.fail((user_object) => {
+           	    window.location.hash = '#/login'
+           	    alert('You didn\'t make it in the doggy door!')
             })
-        })
-    }
+       }
 
 	render(){
 
@@ -117,7 +115,7 @@ class LoginView extends React.Component {
 }
 
 class Home extends React.Component {
-		constructor(props) {
+	constructor(props) {
 		super(props)
 	}
 
@@ -136,26 +134,57 @@ class Home extends React.Component {
 	}
 
 }
-class EventListing extends React.Component{
-		constructor(props) {
+
+
+class PostEvent extends React.Component{
+	constructor(props) {
 		super(props)
+		this.state = {
+			fixMePls: ""
+		}
 	}
 
-	render() {
+	_handleSubmit(e){
+		e.preventDefault();
+		var eventNameVal = this.refs.eventName.getDOMNode().value
+		var eventLocationVal = this.refs.eventLocation.getDOMNode().value
+		var eventDescriptionVal = this.refs.eventDescription.getValue()
+		var eventDateVal = this.refs.eventDate.getDOMNode().value
+	
+		var petEventInstance = new PetEvent()
+
+		petEventInstance.set( 'title' , eventNameVal)
+		petEventInstance.set( 'location' , eventLocationVal)
+		petEventInstance.set( 'description' , eventDescriptionVal)
+		petEventInstance.set( 'date' , eventDateVal)
+
+
+
+		petEventInstance.save().then( function(savedModel){
+			console.log(savedModel);
+			
+			window.location.hash = `#/eventDetail/${savedModel.id}`
+
+
+		})
+
 		
-		return(
 
-			<div className="EventListing">
-				
-			</div>	
+		this.refs.eventName.getDOMNode().value = ''
+		this.refs.eventLocation.getDOMNode().value = ''
+		this.setState({
+			fixMePls: ""
+		})
+		this.refs.eventDate.getDOMNode().value = ''
 
-		)
-	}
-}
 
-class Host extends React.Component{
-		constructor(props) {
-		super(props)
+	} 
+
+	_hackMeTextArea(e){
+		console.log(e.target.value)
+		this.setState({
+			fixMePls: e.target.value
+		})
 	}
 
 	render() {
@@ -165,12 +194,11 @@ class Host extends React.Component{
 			<div className="hostEvent">
 				<Navigation/>
 				<div className="host"> 
-					<form className="hostForm">
-    					<input type='text' className="eventForm" placeholder="Event Name" /> <br/>
-    					<input type='text' className="eventForm" placeholder="Event Location" /><br/>
-    					<Input type='textarea' className="eventDescription" placeholder='Enter your description here...' /><br/>
-    					<input type="date" className="eventDate"/>
-    					
+					<form className="hostForm" onSubmit= {(e) => this._handleSubmit(e)}>
+    					<input type='text' ref="eventName" className="eventForm" placeholder="Event Name" /> <br/>
+    					<input type='text' ref="eventLocation" className="eventForm" placeholder="Event Location" /><br/>
+    					<Input type='textarea' ref="eventDescription" onChange={(e)=>{this._hackMeTextArea(e)} } value={this.state.fixMePls} className="eventDescription" placeholder='Enter your description here...' /><br/>
+    					<input type="date" ref="eventDate"className="eventDate"/>
 						<Button  type="submit" bsSize="small" className="eventButton" > Post Event  </Button>
 					</form>
 				</div>
@@ -180,33 +208,31 @@ class Host extends React.Component{
 	}
 }
 
-// class PostView extends React.Component{
-// 		constructor(props) {
-// 		super(props)
-// 		 this.rerender = () => {
-//             console.log('trying to save')
-//             this.props.data.save()
-//             this.forceUpdate()
-// 	}
-// 		_saveTitle(){
-//         	var text = React.findDOMNode(this.refs.title).innerText
-//         	this.props.data.set('title', text)
-//     },
+class EventDetail extends React.Component{
+		constructor(props) {
+		super(props)
+	}
 
-//     	_saveDescription(){
-//         	var text = React.findDOMNode(this.refs.description).innerText
-//         	this.props.data.set('title', text)
-//     }
-
-
-// 	render() {
+	render() {
 		
-// 		return(
-			
-// 		)
-// 	}
+		
+		return(
 
-export var meetRouter = Parse.Router.extend({
+			<div className="">
+				<Navigation/>
+				<div className="post"> 
+						<ListGroupItem className="postTitle"> <span className="subHead"> {this.props.eventModel.get('title')} </span></ListGroupItem>
+    					<ListGroupItem header='Location' className="postDetails"> {this.props.eventModel.get('location')} </ListGroupItem>
+    					<ListGroupItem header='Date'className="postDetails"> {this.props.eventModel.get('date')} </ListGroupItem>
+						<ListGroupItem className="postDescription">{this.props.eventModel.get('description')}  </ListGroupItem>						
+				</div>
+			</div>	
+
+		)
+	}
+}
+
+export var MeetRouter = Parse.Router.extend({
     
     initialize: function() {
         console.log('app is routing')
@@ -214,20 +240,32 @@ export var meetRouter = Parse.Router.extend({
     },
 
     routes: {
-	'navigation' : 'navigate',
-	'login' : 'log',
-	'home' : 'home',
-	'eventHost' : 'eventHost',
-	'*anything' : 'home'
-},
+		'navigation' : 'navigate',
+		'login' : 'log',
+		'home' : 'home',
+		'postEvent' : 'postEvent',
+		'eventDetail/:eventID' : 'eventDetail',
+		'*anything' : 'home'
+	},
 
 
 	log: function(){
 		React.render(<LoginView/>, document.querySelector('.wrapper'))
 	},
 
-	eventHost: function(){
-		React.render(<Host/>, document.querySelector('.wrapper'))
+	eventDetail: function(eventID){
+		var queryInstance = new Parse.Query(PetEvent)
+			queryInstance.equalTo('objectId', eventID)
+			queryInstance.find().then((resultObj)=>{ 
+				React.render(<EventDetail eventModel={resultObj[0]} />, document.querySelector('.wrapper'))
+
+			})
+
+		
+	},
+
+	postEvent: function(){
+		React.render(<PostEvent/>, document.querySelector('.wrapper'))
 	},
 
 	home: function(){
@@ -248,9 +286,7 @@ export var meetRouter = Parse.Router.extend({
 			//		} else {
 			//			theFailFunction(error)      <----we have to give it this one too!!
 			//	     }
-		
 	}
-
 
  })
 

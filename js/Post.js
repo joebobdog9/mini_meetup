@@ -1,15 +1,15 @@
 import Backbone from 'backbone'
 
-export const Post = Parse.Object.extend({
-	className:'Post',
+export const PetEvent = Parse.Object.extend({
+	className:'DogEvent',
 	defaults: {
-		title: ('no title'),
+		title: null,
 		date: null,
 		location: null,
-		description: ('no description')
+		description: null
 	}
 })
 
-export const Post = Parse.Collection.extend({
-	model: Post
+export const PetEventGroup = Parse.Collection.extend({
+	model: PetEvent
 })

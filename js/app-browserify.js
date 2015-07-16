@@ -7,15 +7,13 @@ import $ from 'jquery'
 import Backbone from 'backbone'
 import React from 'react'
 // import * as Images from './images.js'
-import {meetRouter} from './app.js' 
-
-
-Parse = window.Parse
-Parse.$ = $
+import {MeetRouter} from './app.js' 
 
 
 
-window.addEventListener('load',() => {
-            new meetRouter
+
+
+window.addEventListener('load', function(){
+      var ok = new MeetRouter()
 })
 
