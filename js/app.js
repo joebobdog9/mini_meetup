@@ -16,7 +16,8 @@ import {
 	Button,
 	Search,
 	Textarea,
-	PageHeader
+	PageHeader,
+	CollapsibleNav
 	} from 'react-bootstrap'
 
 import {PetEvent, 
@@ -42,22 +43,21 @@ class Navigation extends React.Component {
 		console.log('rendering')
 
 	return(	
-	<div className="navigationBars">
-
-
-  <ListGroup className="sidebar">
-    <ListGroupItem href='#/home' className="navbutton">Nearby Events</ListGroupItem>
-    <ListGroupItem href='#/link2' className="navbutton">Attending Events</ListGroupItem>
-    <ListGroupItem href='#/linkN' className="navbutton">Hosting Events</ListGroupItem>
-    <ListGroupItem href='#/postEvent' className="postEvent">Host An Event</ListGroupItem>
-    <ListGroupItem href='#/linkN' className="navbutton">Past Events</ListGroupItem>
-  </ListGroup>
-
-  <Navbar className="mynavstyle" brand={<a href="#" className="brand" img src="../images/petset_150.gif"> </a>}>
-  	<Input  className="navSearch" type='text'placeholder='Enter Your Location'/>
-  		<button type="button" className="searchButton"> Search! </button>      
-  </Navbar>
-  	
+<div className="navigationBars">
+ 
+	 <Navbar  className="navBar" brand='Pet Set' imgsrc="../images/petset_logoW.svg" toggleNavKey={0}>
+	    <CollapsibleNav eventKey={0}> {/* This is the eventKey referenced */}
+	      <Nav navbar>
+	        <NavItem  className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
+	        <NavItem className="navLink" eventKey={2} href='#'>Nearby Posts</NavItem>
+	        <NavItem className="navLink" eventKey={2} href='#'>Past Posts</NavItem>
+	      </Nav>
+	      <Nav navbar right>
+	        <NavItem eventKey={1} href='#'>Logout</NavItem>
+	        
+	      </Nav>
+	    </CollapsibleNav>
+	  </Navbar>
 	</div>
     )}
 }
@@ -260,8 +260,6 @@ export var MeetRouter = Parse.Router.extend({
 				React.render(<EventDetail eventModel={resultObj[0]} />, document.querySelector('.wrapper'))
 
 			})
-
-		
 	},
 
 	postEvent: function(){

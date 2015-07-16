@@ -115,18 +115,20 @@ img {
 
 */
 
-.mynavstyle{
-    padding-top: 2rem;
-    background-color: #e6e7e8;
-    position: fixed;
+.navBar{
+    background-color: #66d9c9;
+    border-radius: 0px;
     border-top: none;
-    border-left: none;
     border-right: none;
-    width: 100%;
-    border-radius: 0px;  
-    border-bottom: 1px solid #bbbdc0;
-    z-index: 100;
+    border-left: none;
+    border-bottom: 2px #00bfa5 solid;
+    
 }
+.navLink{
+        color: #FFF;
+        font-family: helvetica;
+        font-weight: bold;
+       }
 
 
 .navSearch{
@@ -250,9 +252,9 @@ img {
 
 
 .map-container{
-    padding-left: 168px;
-    padding-top: 10rem;
     height: 100vh;
+    margin: auto
+
 }
 
 .hostEvent{
@@ -335,8 +337,8 @@ img {
 
 
 .post{
-    padding-left: 20rem;
-    padding-top: 16rem;
+    margin:auto;
+    padding-top: 10rem;
     padding-bottom: 6rem;
     background-color: #fff;
     height: 100vh;
@@ -348,20 +350,26 @@ img {
     z-index: -1;
 
         .postTitle{
+            width: 75%;
             font-size: 3rem;
             font-weight: bold;
             padding-left: 4rem;
+            margin:auto;
         }
            .postDetails{
             color: #999;
+            width: 75%;
             padding-left: 4rem;
+            margin:auto;
         }
         
         .postDescription{
+            width: 75%;
             font-size: 1.5rem;
             color: #999;
             height: 100vh;
             padding: 4rem;
+            margin:auto;
         }
 }
 
