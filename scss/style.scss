@@ -258,27 +258,25 @@ img {
 }
 
 .hostEvent{
-    width: 100vh;
     height: 100vh;
   
 }
 
 .host{
-    padding-left: 20rem;
-    padding-top: 16rem;
-    padding-bottom: 6rem;
+    
+    padding-top: 5rem;
     background-color: #fff;
-    height: 100vh;
-    width: 2000px;
     background-image:url("../images/petset_bg.svg");
     background-size: cover;
 
     .hostForm{
-        width: 500px;
+        width: 75%;
         background-color: #fff;
         padding-top: 4rem;
         padding-left: 4rem;
         height: 100vh;
+        margin: auto;
+        border: 1px solid #D5D5D5;
 
     }
 
@@ -341,7 +339,6 @@ img {
     padding-top: 10rem;
     padding-bottom: 6rem;
     background-color: #fff;
-    height: 100vh;
     width: 100%;
     background-image:url("../images/petset_bg.svg");
     background-size: cover;
@@ -366,10 +363,9 @@ img {
         .postDescription{
             width: 75%;
             font-size: 1.5rem;
-            color: #999;
-            height: 100vh;
             padding: 4rem;
             margin:auto;
+            color: #999;
         }
 }
 

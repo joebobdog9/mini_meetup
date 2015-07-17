@@ -160,7 +160,7 @@ class PostEvent extends React.Component{
 
 
 
-		petEventInstance.save().then( function(savedModel){
+		petEventInstance.save().then(function(savedModel){
 			console.log(savedModel);
 			
 			window.location.hash = `#/eventDetail/${savedModel.id}`

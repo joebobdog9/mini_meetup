@@ -88,7 +88,9 @@ class PetEvent extends React.Component {
 
   _handleClick(e){
       e.preventDefault()
+      
       window.location.hash = '#/eventDetail/W2XaEYpMJT'
+
   }
 
   render() {
