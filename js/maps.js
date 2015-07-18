@@ -2,12 +2,11 @@
 import React from 'react/addons.js'
 import GoogleMap from 'google-map-react'
 
-
 export class GoogleMapMarked extends React.Component {
   constructor(props) {
     super(props);
 
-    
+
     this.state = {
       Event:[]
     }
@@ -39,8 +38,6 @@ export class GoogleMapMarked extends React.Component {
             <PetEventMark lat={29.777070} lng={-95.435494}  zoom={12} />
             <PetEventMark lat={29.772854} lng={-95.298758} zoom={12} />
             <PetEventMark lat={29.654107} lng={-95.276614} zoom={12} />
-
-
           </GoogleMap>
       </div>
     );
@@ -149,5 +146,10 @@ class PetEventMark extends React.Component {
   }
 }
 
+'https://maps.googleapis.com/maps/api/place/radarsearch/json?types=food&key=AIzaSyB8D-8rkwJQgKvGUP2Bm06T7ZK1AixAm-0'
+
+
+// Working Request // 
+'https://maps.googleapis.com/maps/api/place/radarsearch/json?location=29.777070,-95.435494&radius=5000&types=food&key=AIzaSyB8D-8rkwJQgKvGUP2Bm06T7ZK1AixAm-0'
 
 

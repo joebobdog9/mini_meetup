@@ -24,7 +24,12 @@ import {PetEvent,
 	    PetEventGroup} from './Post.js'
 
 import {GoogleMapMarked, 
-		PetEventMark} from './maps.js'
+		PetEventMark,
+		Places}
+		from './maps.js'
+
+
+
 
 
 // https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
@@ -100,8 +105,9 @@ class LoginView extends React.Component {
 			 var error = this.state.error ? (<p className="error-message">{this.state.error} try - password invalid</p>) : ''
 
 		return(
-
+			
 			<div className="logBg">
+				<Places />
 					<div className="logLogo"> </div>
 					<form className="formLog" onSubmit={(e) => this._signupOrLogin(e)}>
     					<Input type='email'ref="userEmail"  placeholder='Enter Email' className='logEmail' />
@@ -126,6 +132,7 @@ class Home extends React.Component {
 
 			<div className="homeView">
 				<Navigation/>
+				
 				<GoogleMapMarked userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
 
 
@@ -193,6 +200,7 @@ class PostEvent extends React.Component{
 
 			<div className="hostEvent">
 				<Navigation/>
+
 				
 				<div className="host"> 
 					<form className="hostForm" onSubmit= {(e) => this._handleSubmit(e)}>
@@ -215,14 +223,14 @@ class EventDetail extends React.Component{
 		constructor(props) {
 		super(props)
 	}
-
-	render() {
+		render() {
 		
 		
 		return(
 
 			<div className="">
 				<Navigation/>
+
 				<div className="post"> 
 						<ListGroupItem className="postTitle"> <span className="subHead"> {this.props.eventModel.get('title')} </span></ListGroupItem>
     					<ListGroupItem header='Location' className="postDetails"> {this.props.eventModel.get('location')} </ListGroupItem>
@@ -234,6 +242,10 @@ class EventDetail extends React.Component{
 		)
 	}
 }
+
+
+
+
 
 export var MeetRouter = Parse.Router.extend({
     
@@ -249,6 +261,7 @@ export var MeetRouter = Parse.Router.extend({
 		'postEvent' : 'postEvent',
 		'eventDetail/:eventID' : 'eventDetail',
 		'*anything' : 'home'
+
 	},
 
 
@@ -273,6 +286,7 @@ export var MeetRouter = Parse.Router.extend({
 			React.render(<PostEvent userLat={data.coords.latitude} userLong={data.coords.longitude}/>, document.querySelector('.wrapper'))
 		})
 	},
+
 
 	home: function(){
 		document.querySelector('.wrapper').innerHTML=`<img src="./bower_components/svg-loaders/svg-loaders/puff.svg" />`
