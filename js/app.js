@@ -23,7 +23,8 @@ import {
 import {PetEvent, 
 	    PetEventGroup} from './Post.js'
 
-import {GoogleMapMarked} from './maps.js'
+import {GoogleMapMarked, 
+		PetEventMark} from './maps.js'
 
 
 // https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
@@ -158,8 +159,6 @@ class PostEvent extends React.Component{
 		petEventInstance.set( 'description' , eventDescriptionVal)
 		petEventInstance.set( 'date' , eventDateVal)
 
-
-
 		petEventInstance.save().then(function(savedModel){
 			console.log(savedModel);
 			
@@ -168,14 +167,15 @@ class PostEvent extends React.Component{
 
 		})
 
-		
-
 		this.refs.eventName.getDOMNode().value = ''
 		this.refs.eventLocation.getDOMNode().value = ''
 		this.setState({
 			fixMePls: ""
 		})
 		this.refs.eventDate.getDOMNode().value = ''
+
+
+
 
 
 	} 
@@ -193,12 +193,15 @@ class PostEvent extends React.Component{
 
 			<div className="hostEvent">
 				<Navigation/>
+				
 				<div className="host"> 
 					<form className="hostForm" onSubmit= {(e) => this._handleSubmit(e)}>
     					<input type='text' ref="eventName" className="eventForm" placeholder="Event Name" /> <br/>
     					<input type='text' ref="eventLocation" className="eventForm" placeholder="Event Location" /><br/>
+    					<GoogleMapMarked className="hostMap" userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
     					<Input type='textarea' ref="eventDescription" onChange={(e)=>{this._hackMeTextArea(e)} } value={this.state.fixMePls} className="eventDescription" placeholder='Enter your description here...' /><br/>
     					<input type="date" ref="eventDate"className="eventDate"/>
+
 						<Button  type="submit" bsSize="small" className="eventButton" > Post Event  </Button>
 					</form>
 				</div>
@@ -263,7 +266,12 @@ export var MeetRouter = Parse.Router.extend({
 	},
 
 	postEvent: function(){
-		React.render(<PostEvent/>, document.querySelector('.wrapper'))
+		navigator.geolocation.getCurrentPosition(function(data){
+			console.log(data);
+			data.coords.latitude 
+			data.coords.longitude
+			React.render(<PostEvent userLat={data.coords.latitude} userLong={data.coords.longitude}/>, document.querySelector('.wrapper'))
+		})
 	},
 
 	home: function(){

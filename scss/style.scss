@@ -274,11 +274,17 @@ img {
         background-color: #fff;
         padding-top: 4rem;
         padding-left: 4rem;
-        height: 100vh;
+        height: 100%;
         margin: auto;
         border: 1px solid #D5D5D5;
-
+            
+             .map-container{
+                height: 50vh;
+                padding-right: 3rem;
+             }
     }
+
+   
 
     .eventForm{
         border: 2px solid #66d9c9;
