@@ -25,7 +25,7 @@ import {PetEvent,
 
 import {GoogleMapMarked, 
 		PetEventMark,
-		Places}
+		UserLocation}
 		from './maps.js'
 
 
@@ -51,10 +51,11 @@ class Navigation extends React.Component {
 	return(	
 <div className="navigationBars">
  
-	 <Navbar  className="navBar" brand='Pet Set' imgsrc="../images/petset_logoW.svg" toggleNavKey={0}>
+	 <Navbar  className="navBar" brand='Pet Set'  imgsrc="../images/petset_logoW.svg" toggleNavKey={0}>
 	    <CollapsibleNav eventKey={0}> {/* This is the eventKey referenced */}
 	      <Nav navbar>
-	        <NavItem  className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
+	       <NavItem  className="navLink" eventKey={1} href='#/home'>Home</NavItem>
+	        <NavItem className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
 	        <NavItem className="navLink" eventKey={2} href='#'>Nearby Posts</NavItem>
 	        <NavItem className="navLink" eventKey={2} href='#'>Past Posts</NavItem>
 	      </Nav>
@@ -136,7 +137,7 @@ class Home extends React.Component {
 
 	_handlePlaceSearch(e){
 		console.log(this)
-		var queryName = this.refs.placesQuery.getDOMNode().value
+		var queryName = this.refs.placesQuery.getDOMNode().va
 
 		console.log(queryName)
 
@@ -184,7 +185,6 @@ class Home extends React.Component {
 
 			<div className="homeView">
 				<Navigation/>
-				
 				<GoogleMapMarked relayGMapObject={this._getGMapObject.bind(this)} userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
 				<input type="text" ref="placesQuery"/>
 				<button onClick={this._handlePlaceSearch.bind(this)}>Click me pls</button>
@@ -242,6 +242,18 @@ class PostEvent extends React.Component{
 			fixMePls: e.target.value
 		})
 	}
+
+	_mapMarker(e){
+
+		this.gmap = map
+		var marker = new PetEventMark ({
+			position: center,
+			title: "petMark!"
+		})
+
+		marker.setMap(map);
+	}
+	
 
 	render() {
 		

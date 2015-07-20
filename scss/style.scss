@@ -98,6 +98,7 @@ img {
 */
 
 
+
  input:focus {
     outline:none;
 } 
@@ -105,6 +106,18 @@ img {
 .form-control:focus{
     border: none;
     box-shadow: none;
+}
+
+.navbar-default{
+   .navbar-nav{
+    li{
+        a{
+            color:  #FFF;
+            font-weight: normal;
+            font-family: helvetica;
+        }
+    }
+   }
 }
 
 
@@ -122,13 +135,11 @@ img {
     border-right: none;
     border-left: none;
     border-bottom: 2px #00bfa5 solid;
-    
-}
-.navLink{
-        color: #FFF;
+        
+        .navLink{
         font-family: helvetica;
-        font-weight: bold;
-       }
+        }
+}
 
 
 .navSearch{

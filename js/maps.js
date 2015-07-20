@@ -2,6 +2,7 @@
 import React from 'react/addons.js'
 import GoogleMap from 'google-map-react'
 import MeetRouter from './app.js'
+import petRouter from './app-browserify.js'
 
 
 export class GoogleMapMarked extends React.Component {
@@ -103,7 +104,7 @@ class PetEventMark extends React.Component {
       e.preventDefault()
 
       // window.location.hash = '#/eventDetail/${this.props.eventModel.id}'
-      MeetRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
+      petRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
                   trigger: true
               })
 
@@ -114,7 +115,7 @@ class PetEventMark extends React.Component {
   render() {
     return (
        <div style={this.stylez} onClick={(e)=>this._handleClick(e)} ref='mapMarker' >
-       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
           viewBox="0 0 100 100" enable-background="new 0 0 100 100">
             <g>
               <g>
@@ -141,18 +142,57 @@ class PetEventMark extends React.Component {
                   c0.8-2.5,2.3-4.4,5.1-4.9c2.3-0.4,4.4,0.4,6.1,1.9C29.9,39,31.3,42.2,31.4,45.2z"/>
               </g>
               </g>
-        </svg>
-
- 
+          </svg>
        </div>
     );
   }
 }
 
-'https://maps.googleapis.com/maps/api/place/radarsearch/json?types=food&key=AIzaSyB8D-8rkwJQgKvGUP2Bm06T7ZK1AixAm-0'
+class AccessingArguments extends React.Component {
 
+  constructor (...args) {
+    super(...args);
+    this.state =  {
+      markers: [],
+    };
+  }
 
-// Working Request // 
-'https://maps.googleapis.com/maps/api/place/radarsearch/json?location=29.777070,-95.435494&radius=5000&types=food&key=AIzaSyB8D-8rkwJQgKvGUP2Bm06T7ZK1AixAm-0'
+  _handle_map_click (event) {
+    const {markers} = this.state;
+    markers.push({
+      position: event.latLng
+    });
+    this.setState({ markers });
+    this.refs.map.panTo(event.latLng);
+  }
 
+  render () {
+    const {props, state} = this,
+          {googleMapsApi, ...otherProps} = props;
 
+    return (
+      <GoogleMapsMarked containerProps={{
+          ...otherProps,
+          style: {
+            height: "100%",
+          },
+        }}
+        ref="map"
+        googleMapsApi={google.maps}
+        zoom={4}
+        center={new google.maps.LatLng(-25.363882, 131.044922)}
+        onClick={this._handle_map_click.bind(this)}>
+        {state.markers.map(toMarker, this)}
+      </GoogleMapsMarked>
+    );
+
+    function toMarker (marker) {
+      return (
+        <Marker position={marker.position} />
+      );
+    }
+  }
+
+}
+
+export default AccessingArguments;

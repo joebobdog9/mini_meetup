@@ -17,3 +17,4 @@ window.addEventListener('load', function(){
       var ok = new MeetRouter()
 })
 
+var petRouter = new MeetRouter ();
