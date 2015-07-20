@@ -124,6 +124,58 @@ class LoginView extends React.Component {
 class Home extends React.Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			queryResults : null
+		}
+	}
+
+	_getGMapObject(map){
+		console.log('Top-Level')
+		this.gmap = map
+	}
+
+	_handlePlaceSearch(e){
+		console.log(this)
+		var queryName = this.refs.placesQuery.getDOMNode().value
+
+		console.log(queryName)
+
+		this.__getPlaces(this.gmap, queryName)
+			.then(function(returnedResults){
+				console.log(returnedResults)
+
+				var reactDOMEls = returnedResults.map((venue)=>{
+            		return <li>{venue.name} -- {venue.vicinity}</li>
+            	})
+
+	            this.setState({
+	            	queryResults: reactDOMEls
+	            })
+			}.bind(this))
+		
+
+	}
+
+
+
+	__getPlaces(gmap,query){
+
+		var jqPromise = $.Deferred()
+
+		var service = new google.maps.places.PlacesService(gmap);
+        var location = new google.maps.LatLng(this.props.userLat,this.props.userLong);
+        var request = {
+            location: location,
+            radius: '10000',
+            name: query
+          };
+
+        service.nearbySearch(request, (searchResults, status)=>{
+        	console.log(searchResults)
+            jqPromise.resolve(searchResults)
+        })
+
+        return jqPromise
 	}
 
 	render() {
@@ -133,9 +185,10 @@ class Home extends React.Component {
 			<div className="homeView">
 				<Navigation/>
 				
-				<GoogleMapMarked userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
-
-
+				<GoogleMapMarked relayGMapObject={this._getGMapObject.bind(this)} userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
+				<input type="text" ref="placesQuery"/>
+				<button onClick={this._handlePlaceSearch.bind(this)}>Click me pls</button>
+				<ol>{this.state.queryResults}</ol>
 			 </div>
 
 		)
@@ -180,10 +233,6 @@ class PostEvent extends React.Component{
 			fixMePls: ""
 		})
 		this.refs.eventDate.getDOMNode().value = ''
-
-
-
-
 
 	} 
 

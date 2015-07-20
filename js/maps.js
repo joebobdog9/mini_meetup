@@ -1,39 +1,37 @@
 
 import React from 'react/addons.js'
 import GoogleMap from 'google-map-react'
+import MeetRouter from './app.js'
+
 
 export class GoogleMapMarked extends React.Component {
   constructor(props) {
     super(props);
 
-
-    this.state = {
-      Event:[]
-    }
-    var dogEvent = Parse.Object.extend("DogEvent");
-    this.state.parseQuery = new Parse.Query (dogEvent)
+    this.state={}
+  
 
   }
 
-  componentDidMount(){
-      this.state.parseQuery.find({
-      success: function(results) {
-       console.log(results);
-        },
-      
-       error: function(error) {
-        alert("Error: " + error.code + " " + error.message);
-      }
-    })
+  _goGetMap(mapInChild){
+    this.props.relayGMapObject(mapInChild)
   }
+
+
+  
 
   render() {
+
+
+
     return (
         <div className="map-container" >
            <GoogleMap
             apiKey ={'AIzaSyB8D-8rkwJQgKvGUP2Bm06T7ZK1AixAm-0'}
             center={[this.props.userLatRelay, this.props.userLongRelay]}
-            zoom={12}>
+            zoom={12}
+            sendUpMap = {this._goGetMap.bind(this)}
+            >
             <UserLocation lat={this.props.userLatRelay} lng={this.props.userLongRelay} zoom={12}  />
             <PetEventMark lat={29.777070} lng={-95.435494}  zoom={12} />
             <PetEventMark lat={29.772854} lng={-95.298758} zoom={12} />
@@ -104,9 +102,14 @@ class PetEventMark extends React.Component {
   _handleClick(e){
       e.preventDefault()
 
-      window.location.hash = '#/eventDetail/______.id'
+      // window.location.hash = '#/eventDetail/${this.props.eventModel.id}'
+      MeetRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
+                  trigger: true
+              })
+
 
   }
+
 
   render() {
     return (
