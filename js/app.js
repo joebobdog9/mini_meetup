@@ -170,37 +170,88 @@ class PostEvent extends React.Component{
 
 	_handleSubmit(e){
 		e.preventDefault();
+
+		// if (!this.state.selectedVenue){
+		// 	alert('Please pick a venue from the map')
+		// 	return 	
+		// } 
+
 		var eventNameVal = this.refs.eventName.getDOMNode().value
 		var eventLocationVal = this.refs.eventLocation.getDOMNode().value
-		var eventLocationDetsVal = this.refs.eventLocationDets.getDOMNode().value
+		var eventLocationDetailsVal = this.refs.eventLocationDetails.getDOMNode().value
 		var eventDescriptionVal = this.refs.eventDescription.getValue()
 		var eventDateVal = this.refs.eventDate.getDOMNode().value
+		var eventTimeVal = this.refs.eventTime.getDOMNode().value
 
 	
 		var petEventInstance = new PetEvent()
 
 		petEventInstance.set( 'title' , eventNameVal)
-		petEventInstance.set( 'location' , eventLocationVal)
-		petEventInstance.set( 'location' , eventLocationDetsVal)
-		petEventInstance.set( 'description' , eventDescriptionVal)
-		petEventInstance.set( 'date' , eventDateVal)
+		petEventInstance.set( 'location_venue' , this.state.selectedVenue.vicinity)
+		petEventInstance.set( 'location_lat' , this.state.selectedVenue.geometry.location.A)
+		petEventInstance.set( 'location_lng' , this.state.selectedVenue.geometry.location.F)
+		petEventInstance.set( 'location_gMap' , this.state.selectedVenue)
 
-		petEventInstance.save().then(function(savedModel){
-			console.log(savedModel);
-			
-			window.location.hash = `#/eventDetail/${savedModel.id}`
+		var geopoint = new Parse.GeoPoint(
+				this.state.selectedVenue.geometry.location.A,
+				this.state.selectedVenue.geometry.location.F
+			)
+
+		petEventInstance.set( 'location_geopoint' , geopoint)
+
+		petEventInstance.set( 'locationDetails' , eventLocationDetailsVal)
+		petEventInstance.set( 'description' , eventDescriptionVal)
+
+		console.log(eventTimeVal)
+
+
+		var dateStringArray = eventDateVal.split('-')
+		var dateNumberArray = dateStringArray.map( (dateString) => {
+			return parseInt(dateString) 
+		})
+
+		var timeStringArray = eventTimeVal.split(':')
+		var timeNumberArray = timeStringArray.map( (timeString) => {
+			return parseInt(timeString) 
 
 
 		})
 
+		console.log(timeNumberArray)
+		var jsDateObject = new Date(
+			dateNumberArray[0],
+			dateNumberArray[1]-1,
+			dateNumberArray[2],
+			timeNumberArray[0],
+			timeNumberArray[1]
+			)
+
+
+
+		console.log(jsDateObject)
+
+		petEventInstance.set( 'date' , jsDateObject)
+
+
+
+
+		console.log(petEventInstance)
+		console.log(eventDateVal)
+
 		this.refs.eventName.getDOMNode().value = ''
 		this.refs.eventLocation.getDOMNode().value = ''
-		this.refs.eventLocationDets.getDOMNode().value = ''
+		this.refs.eventLocationDetails.getDOMNode().value = ''
 		this.setState({
 			fixMePls: ""
 		})
 		this.refs.eventDate.getDOMNode().value = ''
 		this.refs.eventDate.getDOMNode().value = ''
+
+
+		petEventInstance.save().then((savedModel)=>{
+				alert('You saved that shit!')
+
+		})
 
 	} 
 
@@ -301,8 +352,11 @@ class PostEvent extends React.Component{
 
 		this.setState({
 			placesAsDOMNodes: RComponent,
-			searchedPlaces: filteredSingleMap
+			searchedPlaces: filteredSingleMap,
+			selectedVenue: filteredSingleMap[0]
 		})
+
+
 
 	}
 
@@ -331,7 +385,7 @@ class PostEvent extends React.Component{
 						     	{this.state.placesAsDOMNodes}
 						      </tbody> 
     					</table>
-    					<input type='text' ref="eventLocationDets" className="eventForm" placeholder="Event Location Details" /><br/>
+    					<input type='text' ref="eventLocationDetails" className="eventForm" placeholder="Event Location Details" /><br/>
     					<GoogleMapMarked 
     						associatedComponent = "PostEvent"
     						postEvent_map_items={this.state.searchedPlaces}
@@ -341,8 +395,15 @@ class PostEvent extends React.Component{
     						userLongRelay={this.props.userLong}
     						notifyParentUIComponent={this._handleVenueSelection.bind(this)}
     					/>
-    					<Input type='textarea' ref="eventDescription" onChange={(e)=>{this._hackMeTextArea(e)} } value={this.state.fixMePls} className="eventDescription" placeholder='Enter your description here...' /><br/>
-    					<input type="date" ref="eventDate"className="eventDate"/>
+    					<Input 
+		    					type='textarea' 
+		    					ref="eventDescription" 
+		    					onChange={(e)=>{this._hackMeTextArea(e)} } 
+		    					value={this.state.fixMePls} className="eventDescription" 
+		    					placeholder='Enter your description here...' /><br/>
+		    			<input type="date" ref="eventDate"className="eventDate"/>
+		    			<input type="time" ref="eventTime" className="eventDate"/>
+
 
 						<Button  type="submit" bsSize="small" className="eventButton" > Post Event  </Button>
 					</form>

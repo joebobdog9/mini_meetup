@@ -1,11 +1,10 @@
 import Backbone from 'backbone'
 
 export const PetEvent = Parse.Object.extend({
-	className:'DogEvent',
+	className:'petEvent',
 	defaults: {
 		title: null,
 		date: null,
-		location: null,
 		description: null
 	}
 })
