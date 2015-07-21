@@ -223,7 +223,7 @@ img {
     width: 150px;
     height: 150px;
     margin: auto;
-    padding-top: 10rem;
+   margin-bottom:3rem;
 }
 
 .formLog{
@@ -231,8 +231,7 @@ img {
 }
 
 .logPass{
-   margin-left: 200px;
-   margin-top: 1rem;
+   margin:auto;
    max-width: 300px;
    color: #00bfa5;
    border: 1px solid #00bfa5;
@@ -240,8 +239,7 @@ img {
 }
 
 .logEmail{
-   margin-left: 200px;
-   margin-top: 10rem;
+  margin:auto;
    max-width: 300px;
    color: #00bfa5;
    border: 1px solid #00bfa5;
@@ -249,7 +247,7 @@ img {
 }
 
 .joinButton{
-    margin-left: 20rem;
+    margin-left: 37rem;
     background-color: #00bfa5;
     color:white;
     border:none;
@@ -285,6 +283,15 @@ img {
     background-image:url("../images/petset_bg.svg");
     background-size: cover;
 
+        .eventDate{
+        border: 2px solid #66d9c9;
+        color:  #999;
+        font-family: helvetica;
+        margin-left: 1rem;
+        border-radius: 5px;
+        
+    }
+
     .hostForm{
         width: 75%;
         background-color: #fff;
@@ -298,6 +305,7 @@ img {
              .map-container{
                 height: 50vh;
                 padding-right: 3rem;
+                padding:.5rem;
              }
     }
 
@@ -306,7 +314,7 @@ img {
     .eventForm{
         border: 2px solid #66d9c9;
         color:  #00695c;
-        max-width: 400px;
+        max-width: 85%;
         margin-top: 1rem;
         margin-bottom: 1rem;
         border-radius: 5px;
@@ -324,11 +332,7 @@ img {
         
     }
 
-    .eventDate{
-        border: 2px solid #66d9c9;
-        color:  #999;
-        font-family: helvetica;
-    }
+
 
     .eventButton{
         

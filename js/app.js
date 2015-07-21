@@ -113,7 +113,7 @@ class LoginView extends React.Component {
 		return(
 			
 			<div className="logBg">
-				<Places />
+				
 					<div className="logLogo"> </div>
 					<form className="formLog" onSubmit={(e) => this._signupOrLogin(e)}>
     					<Input type='email'ref="userEmail"  placeholder='Enter Email' className='logEmail' />
@@ -229,15 +229,13 @@ class PostEvent extends React.Component{
 
 
 
-		console.log(jsDateObject)
 
 		petEventInstance.set( 'date' , jsDateObject)
 
 
 
 
-		console.log(petEventInstance)
-		console.log(eventDateVal)
+		
 
 		this.refs.eventName.getDOMNode().value = ''
 		this.refs.eventLocation.getDOMNode().value = ''
@@ -246,13 +244,18 @@ class PostEvent extends React.Component{
 			fixMePls: ""
 		})
 		this.refs.eventDate.getDOMNode().value = ''
-		this.refs.eventDate.getDOMNode().value = ''
+		this.refs.eventTime.getDOMNode().value = ''
 
 
 		petEventInstance.save().then((savedModel)=>{
 				alert('You saved that shit!')
+				window.location.hash = `#/eventDetail/${savedModel.id}`
+
 
 		})
+
+
+
 
 	} 
 
@@ -359,6 +362,7 @@ class PostEvent extends React.Component{
 
 
 
+
 	}
 
 	render() {
@@ -429,7 +433,8 @@ class EventDetail extends React.Component{
 
 				<div className="post"> 
 						<ListGroupItem className="postTitle"> <span className="subHead"> {this.props.eventModel.get('title')} </span></ListGroupItem>
-    					<ListGroupItem header='Location' className="postDetails"> {this.props.eventModel.get('location')} </ListGroupItem>
+    					<ListGroupItem header='Location' className="postDetails"> {this.props.eventModel.get('location_venue')} </ListGroupItem>
+    					<ListGroupItem header='Location Details' className="postDetails"> {this.props.eventModel.get('locationDetails')} </ListGroupItem>
     					<ListGroupItem header='Date'className="postDetails"> {this.props.eventModel.get('date')} </ListGroupItem>
 						<ListGroupItem className="postDescription">{this.props.eventModel.get('description')}  </ListGroupItem>						
 				</div>

@@ -147,10 +147,10 @@ class PetEventMark extends React.Component {
   _handleClick(e){
       e.preventDefault()
 
-      // window.location.hash = '#/eventDetail/${this.props.eventModel.FwO5JpFPmd}'
-      petRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
-                  trigger: true
-              })
+      window.location.hash = '#/eventDetail/${this.props.eventModel.id}'
+      // petRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
+      //             trigger: true
+      //         })
 
 
   }
