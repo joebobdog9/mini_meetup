@@ -2,14 +2,17 @@
 import React from 'react/addons.js'
 import GoogleMap from 'google-map-react'
 import MeetRouter from './app.js'
-import petRouter from './app-browserify.js'
+
+
 
 
 export class GoogleMapMarked extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state={}
+    this.state={
+      newShitOnTheMap: <div></div>
+    }
   
 
   }
@@ -18,8 +21,44 @@ export class GoogleMapMarked extends React.Component {
     this.props.relayGMapObject(mapInChild)
   }
 
+  componentWillReceiveProps(newProps){
+    console.log('new props, bits')
+    console.log(newProps)
 
-  
+
+    switch (newProps.associatedComponent) {
+      case ("PostEvent"):
+        this._renderMapMarkers(newProps.postEvent_map_items);
+        break
+      case("Home"):
+        this._renderMapMarkers(newProps.petEvents_map_items);
+        break
+      default:
+        throw ('no associated-component was passed to render the map markers')
+        break
+    }
+
+
+  }
+
+  _renderMapMarkers(gmapObjects){
+    
+    var resultMarkComponents = gmapObjects.map( (gmap) => {
+      return <NewEventMark lat={gmap.geometry.location.A} lng={gmap.geometry.location.F}  zoom={12} />
+    })
+
+    this.setState({
+      newShitOnTheMap: resultMarkComponents
+    })
+
+  }
+
+  // _renderConfirmedEventMarks(){
+  //   console.log(eventModel) // please good
+  //   return <PetEventMark lat={29.777070} lng={-95.435494}  zoom={12} />
+
+
+  // }
 
   render() {
 
@@ -34,9 +73,7 @@ export class GoogleMapMarked extends React.Component {
             sendUpMap = {this._goGetMap.bind(this)}
             >
             <UserLocation lat={this.props.userLatRelay} lng={this.props.userLongRelay} zoom={12}  />
-            <PetEventMark lat={29.777070} lng={-95.435494}  zoom={12} />
-            <PetEventMark lat={29.772854} lng={-95.298758} zoom={12} />
-            <PetEventMark lat={29.654107} lng={-95.276614} zoom={12} />
+            {this.state.newShitOnTheMap }
           </GoogleMap>
       </div>
     );
@@ -148,51 +185,50 @@ class PetEventMark extends React.Component {
   }
 }
 
-class AccessingArguments extends React.Component {
 
-  constructor (...args) {
-    super(...args);
-    this.state =  {
-      markers: [],
-    };
-  }
+var P_WIDTH = 20 , P_HEIGHT = 20 
 
-  _handle_map_click (event) {
-    const {markers} = this.state;
-    markers.push({
-      position: event.latLng
-    });
-    this.setState({ markers });
-    this.refs.map.panTo(event.latLng);
-  }
-
-  render () {
-    const {props, state} = this,
-          {googleMapsApi, ...otherProps} = props;
-
-    return (
-      <GoogleMapsMarked containerProps={{
-          ...otherProps,
-          style: {
-            height: "100%",
-          },
-        }}
-        ref="map"
-        googleMapsApi={google.maps}
-        zoom={4}
-        center={new google.maps.LatLng(-25.363882, 131.044922)}
-        onClick={this._handle_map_click.bind(this)}>
-        {state.markers.map(toMarker, this)}
-      </GoogleMapsMarked>
-    );
-
-    function toMarker (marker) {
-      return (
-        <Marker position={marker.position} />
-      );
+class NewEventMark extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stylez = {
+          position: 'absolute',
+          width: K_WIDTH,
+          height: K_HEIGHT,
+          left: -K_WIDTH / 2,
+          top: -K_HEIGHT / 2,
+          border: '2px solid #a6d6f6',
+          borderRadius: K_HEIGHT,
+          backgroundColor: '#fff',
+          textAlign: 'center',
+          color: '#00bfa5',
+          fontSize: 16,
+          fontWeight: 'bold',
+          lineHeight: "18px",
+          fontFamily: "Helvetica",
+          cursor: 'pointer'
     }
+
   }
 
+  _handleClick(e){
+      e.preventDefault()
+
+      // window.location.hash = '#/eventDetail/${this.props.eventModel.id}'
+      petRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
+                  trigger: true
+              })
+
+
+  }
+
+
+  render() {
+    return (
+       <div style={this.stylez} onClick={(e)=>this._handleClick(e)} ref='mapMarker' >
+         ?
+       </div>
+    );
+  }
 }
 
-export default AccessingArguments;

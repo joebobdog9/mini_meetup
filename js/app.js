@@ -18,6 +18,7 @@ import {
 	Textarea,
 	PageHeader,
 	CollapsibleNav
+
 	} from 'react-bootstrap'
 
 import {PetEvent, 
@@ -27,6 +28,9 @@ import {GoogleMapMarked,
 		PetEventMark,
 		UserLocation}
 		from './maps.js'
+
+import  {getLatLonDistance} from './distance.js'
+
 
 
 
@@ -135,49 +139,6 @@ class Home extends React.Component {
 		this.gmap = map
 	}
 
-	_handlePlaceSearch(e){
-		console.log(this)
-		var queryName = this.refs.placesQuery.getDOMNode().va
-
-		console.log(queryName)
-
-		this.__getPlaces(this.gmap, queryName)
-			.then(function(returnedResults){
-				console.log(returnedResults)
-
-				var reactDOMEls = returnedResults.map((venue)=>{
-            		return <li>{venue.name} -- {venue.vicinity}</li>
-            	})
-
-	            this.setState({
-	            	queryResults: reactDOMEls
-	            })
-			}.bind(this))
-		
-
-	}
-
-
-
-	__getPlaces(gmap,query){
-
-		var jqPromise = $.Deferred()
-
-		var service = new google.maps.places.PlacesService(gmap);
-        var location = new google.maps.LatLng(this.props.userLat,this.props.userLong);
-        var request = {
-            location: location,
-            radius: '10000',
-            name: query
-          };
-
-        service.nearbySearch(request, (searchResults, status)=>{
-        	console.log(searchResults)
-            jqPromise.resolve(searchResults)
-        })
-
-        return jqPromise
-	}
 
 	render() {
 		
@@ -187,7 +148,7 @@ class Home extends React.Component {
 				<Navigation/>
 				<GoogleMapMarked relayGMapObject={this._getGMapObject.bind(this)} userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
 				<input type="text" ref="placesQuery"/>
-				<button onClick={this._handlePlaceSearch.bind(this)}>Click me pls</button>
+				
 				<ol>{this.state.queryResults}</ol>
 			 </div>
 
@@ -201,7 +162,9 @@ class PostEvent extends React.Component{
 	constructor(props) {
 		super(props)
 		this.state = {
-			fixMePls: ""
+			fixMePls: "",
+			placesAsDOMNodes: null,
+			searchedPlaces: null
 		}
 	}
 
@@ -209,13 +172,16 @@ class PostEvent extends React.Component{
 		e.preventDefault();
 		var eventNameVal = this.refs.eventName.getDOMNode().value
 		var eventLocationVal = this.refs.eventLocation.getDOMNode().value
+		var eventLocationDetsVal = this.refs.eventLocationDets.getDOMNode().value
 		var eventDescriptionVal = this.refs.eventDescription.getValue()
 		var eventDateVal = this.refs.eventDate.getDOMNode().value
+
 	
 		var petEventInstance = new PetEvent()
 
 		petEventInstance.set( 'title' , eventNameVal)
 		petEventInstance.set( 'location' , eventLocationVal)
+		petEventInstance.set( 'location' , eventLocationDetsVal)
 		petEventInstance.set( 'description' , eventDescriptionVal)
 		petEventInstance.set( 'date' , eventDateVal)
 
@@ -229,9 +195,11 @@ class PostEvent extends React.Component{
 
 		this.refs.eventName.getDOMNode().value = ''
 		this.refs.eventLocation.getDOMNode().value = ''
+		this.refs.eventLocationDets.getDOMNode().value = ''
 		this.setState({
 			fixMePls: ""
 		})
+		this.refs.eventDate.getDOMNode().value = ''
 		this.refs.eventDate.getDOMNode().value = ''
 
 	} 
@@ -243,20 +211,79 @@ class PostEvent extends React.Component{
 		})
 	}
 
-	_mapMarker(e){
 
-		this.gmap = map
-		var marker = new PetEventMark ({
-			position: center,
-			title: "petMark!"
+
+
+	__showVenues(placesArray){
+		var RComponents = placesArray.map((place) =>{
+			
+			return (
+				<tr>
+				    <th scope="row">1</th>
+				    <td>{place.name}</td>
+				    <td>{place.vicinity}</td>
+				</tr>
+			)
 		})
 
-		marker.setMap(map);
+		this.setState({
+			placesAsDOMNodes: RComponents,
+			searchedPlaces: placesArray
+		})
+
+	}
+
+	_getGMapObject(map){
+		console.log('Top-Level')
+		this.gmap = map
+	}
+
+	_handlePlaceSearch(e){
+		e.preventDefault()
+
+	
+		var queryName = this.refs.eventLocation.getDOMNode().value
+
+		console.log(queryName)
+
+		this.__getPlaces(this.gmap, queryName)
+			.then(function(returnedResults){
+				console.log(returnedResults)
+
+				this.__showVenues(returnedResults)
+
+
+
+			}.bind(this))
+	}
+
+
+
+	__getPlaces(gmap,query){
+
+		var jqPromise = $.Deferred()
+
+
+		var service = new google.maps.places.PlacesService(gmap);
+        var location = new google.maps.LatLng(this.props.userLat,this.props.userLong);
+        var request = {
+            location: location,
+            radius: '10000',
+            name: query
+          };
+
+        service.nearbySearch(request, (searchResults, status)=>{
+        	console.log(searchResults)
+            return jqPromise.resolve(searchResults)
+
+        })
+
+        return jqPromise
 	}
 	
 
 	render() {
-		
+		console.log
 		return(
 
 			<div className="hostEvent">
@@ -266,8 +293,29 @@ class PostEvent extends React.Component{
 				<div className="host"> 
 					<form className="hostForm" onSubmit= {(e) => this._handleSubmit(e)}>
     					<input type='text' ref="eventName" className="eventForm" placeholder="Event Name" /> <br/>
-    					<input type='text' ref="eventLocation" className="eventForm" placeholder="Event Location" /><br/>
-    					<GoogleMapMarked className="hostMap" userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
+    					<input type='text' ref="eventLocation" className="eventForm" placeholder="Event Location" /> <button className="btn btn-default btn-sm" onClick={this._handlePlaceSearch.bind(this)}> Search </button><br/>
+    					<table className="table table-hover">
+    						 <caption>Select Location on Map</caption>
+						      <thead>
+						        <tr>
+						          <th>#</th>
+						          <th>Venue Name</th>
+						          <th>Address</th>
+						        </tr>
+						      </thead>
+						      <tbody>
+						     	{this.state.placesAsDOMNodes}
+						      </tbody> 
+    					</table>
+    					<input type='text' ref="eventLocationDets" className="eventForm" placeholder="Event Location Details" /><br/>
+    					<GoogleMapMarked 
+    						associatedComponent = "PostEvent"
+    						postEvent_map_items={this.state.searchedPlaces}
+    						className="hostMap" 
+    						relayGMapObject={this._getGMapObject.bind(this)} 
+    						userLatRelay={this.props.userLat} 
+    						userLongRelay={this.props.userLong}
+    					/>
     					<Input type='textarea' ref="eventDescription" onChange={(e)=>{this._hackMeTextArea(e)} } value={this.state.fixMePls} className="eventDescription" placeholder='Enter your description here...' /><br/>
     					<input type="date" ref="eventDate"className="eventDate"/>
 
@@ -351,12 +399,19 @@ export var MeetRouter = Parse.Router.extend({
 
 	home: function(){
 		document.querySelector('.wrapper').innerHTML=`<img src="./bower_components/svg-loaders/svg-loaders/puff.svg" />`
-		navigator.geolocation.getCurrentPosition(function(data){
-			console.log(data);
-			data.coords.latitude 
-			data.coords.longitude
-			React.render(<Home userLat={data.coords.latitude} userLong={data.coords.longitude}/>, document.querySelector('.wrapper'))
-		})
+		navigator.geolocation.getCurrentPosition(
+			function(pos){
+				//new Parse.Query() for events in area 
+				// Area determined by a <, > queries on events lat & lng 
+
+
+
+				React.render(<Home userLat={pos.coords.latitude} userLong={pos.coords.longitude}/>, document.querySelector('.wrapper'))
+			},
+			function(error){
+				alert('geoloc not successful')
+			}	
+		)
 		// getCurrentPosition(theSuccessFunction, theFailFunction){
 
 			//1 - does it's magic to get the geolocation...we ca't see this
