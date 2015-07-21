@@ -13,8 +13,12 @@ export class GoogleMapMarked extends React.Component {
     this.state={
       newShitOnTheMap: <div></div>
     }
-  
+  }
 
+
+  _selectedMarkerNotifiesThisComponent(mapPls){
+    console.log('GoogleMapMarked will now pass this to the parent UI component')
+    this.props.notifyParentUIComponent(mapPls)
   }
 
   _goGetMap(mapInChild){
@@ -28,7 +32,7 @@ export class GoogleMapMarked extends React.Component {
 
     switch (newProps.associatedComponent) {
       case ("PostEvent"):
-        this._renderMapMarkers(newProps.postEvent_map_items);
+        this._renderMapMarkers(newProps.postEvent_map_items) ;
         break
       case("Home"):
         this._renderMapMarkers(newProps.petEvents_map_items);
@@ -37,20 +41,23 @@ export class GoogleMapMarked extends React.Component {
         throw ('no associated-component was passed to render the map markers')
         break
     }
-
-
   }
 
   _renderMapMarkers(gmapObjects){
     
     var resultMarkComponents = gmapObjects.map( (gmap) => {
-      return <NewEventMark lat={gmap.geometry.location.A} lng={gmap.geometry.location.F}  zoom={12} />
+      return <NewEventMark 
+        lat={gmap.geometry.location.A} 
+        lng={gmap.geometry.location.F} mapData={gmap}  
+        alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
+
+        zoom={12}
+      />
     })
 
     this.setState({
       newShitOnTheMap: resultMarkComponents
     })
-
   }
 
   // _renderConfirmedEventMarks(){
@@ -197,7 +204,7 @@ class NewEventMark extends React.Component {
           height: K_HEIGHT,
           left: -K_WIDTH / 2,
           top: -K_HEIGHT / 2,
-          border: '2px solid #a6d6f6',
+          border: '2px solid #ff726d',
           borderRadius: K_HEIGHT,
           backgroundColor: '#fff',
           textAlign: 'center',
@@ -206,18 +213,24 @@ class NewEventMark extends React.Component {
           fontWeight: 'bold',
           lineHeight: "18px",
           fontFamily: "Helvetica",
+          backgroundImage: "../images/locationMark.svg",
           cursor: 'pointer'
     }
 
   }
 
+
   _handleClick(e){
       e.preventDefault()
+  
+      this.props.mapData
+      console.log(this.props.mapData)
 
-      // window.location.hash = '#/eventDetail/${this.props.eventModel.id}'
-      petRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
-                  trigger: true
-              })
+      console.log(this)
+
+      this.stylez.backgroundColor = 'yellow';
+
+      this.props.alertVenueSelection(this.props.mapData)
 
 
   }
@@ -225,9 +238,15 @@ class NewEventMark extends React.Component {
 
   render() {
     return (
-       <div style={this.stylez} onClick={(e)=>this._handleClick(e)} ref='mapMarker' >
-         ?
-       </div>
+      <div style={this.stylez} onClick={(e)=>this._handleClick(e)} ref='mapMarker' >
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+              viewBox="0 0 200 200" enable-background="new 0 0 200 200" >
+         <g>
+          <path fill="#FF726D" d="M121.2,99.3c11.4,0,22.7,0,34.2,0c-18.6,24-36.9,47.9-55.4,71.8c-18.4-23.9-36.8-47.7-55.4-71.7
+          c11.5,0,22.7,0,34.1,0c0-23.6,0-47,0-70.6c14.2,0,28.2,0,42.5,0C121.2,52.3,121.2,75.8,121.2,99.3z"/>
+        </g>
+        </svg>
+      </div>
     );
   }
 }

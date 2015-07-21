@@ -281,6 +281,30 @@ class PostEvent extends React.Component{
         return jqPromise
 	}
 	
+	_handleVenueSelection(selectedGmap){
+		console.log(selectedGmap)
+		var filteredSingleMap = this.state.searchedPlaces.filter((resultGmap) =>{
+			
+			return selectedGmap.id === resultGmap.id 
+		})
+
+		var RComponent = filteredSingleMap.map((place) =>{
+			
+			return (
+				<tr>
+				    <th scope="row">1</th>
+				    <td>{place.name}</td>
+				    <td>{place.vicinity}</td>
+				</tr>
+			)
+		})
+
+		this.setState({
+			placesAsDOMNodes: RComponent,
+			searchedPlaces: filteredSingleMap
+		})
+
+	}
 
 	render() {
 		console.log
@@ -315,6 +339,7 @@ class PostEvent extends React.Component{
     						relayGMapObject={this._getGMapObject.bind(this)} 
     						userLatRelay={this.props.userLat} 
     						userLongRelay={this.props.userLong}
+    						notifyParentUIComponent={this._handleVenueSelection.bind(this)}
     					/>
     					<Input type='textarea' ref="eventDescription" onChange={(e)=>{this._hackMeTextArea(e)} } value={this.state.fixMePls} className="eventDescription" placeholder='Enter your description here...' /><br/>
     					<input type="date" ref="eventDate"className="eventDate"/>
