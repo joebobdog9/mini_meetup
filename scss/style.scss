@@ -97,7 +97,11 @@ img {
 
 */
 
+.navbar-brand{
+    background-image: url(../images/petset_50w.svg);
+    background-repeat: no-repeat;
 
+}
 
  input:focus {
     outline:none;
@@ -129,6 +133,7 @@ img {
 */
 
 .navBar{
+    padding-top: 1rem;
     background-color: #66d9c9;
     border-radius: 0px;
     border-top: none;

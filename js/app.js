@@ -54,10 +54,11 @@ class Navigation extends React.Component {
 
 	return(	
 <div className="navigationBars">
- 
-	 <Navbar  className="navBar" brand='Pet Set'  imgsrc="../images/petset_logoW.svg" toggleNavKey={0}>
+
+	 <Navbar  className="navBar"  brand="  " toggleNavKey={0}>
 	    <CollapsibleNav eventKey={0}> {/* This is the eventKey referenced */}
 	      <Nav navbar>
+	      
 	       <NavItem  className="navLink" eventKey={1} href='#/home'>Home</NavItem>
 	        <NavItem className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
 	        <NavItem className="navLink" eventKey={2} href='#'>Nearby Posts</NavItem>
