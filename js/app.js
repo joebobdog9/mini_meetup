@@ -50,27 +50,26 @@ class Navigation extends React.Component {
 
 	render(){
 
-		console.log('rendering')
 
 	return(	
-<div className="navigationBars">
+		<div className="navigationBars">
 
-	 <Navbar  className="navBar"  brand="  " toggleNavKey={0}>
-	    <CollapsibleNav eventKey={0}> {/* This is the eventKey referenced */}
-	      <Nav navbar>
-	      
-	       <NavItem  className="navLink" eventKey={1} href='#/home'>Home</NavItem>
-	        <NavItem className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
-	        <NavItem className="navLink" eventKey={2} href='#'>Nearby Posts</NavItem>
-	        <NavItem className="navLink" eventKey={2} href='#'>Past Posts</NavItem>
-	      </Nav>
-	      <Nav navbar right>
-	        <NavItem eventKey={1} href='#'>Logout</NavItem>
-	        
-	      </Nav>
-	    </CollapsibleNav>
-	  </Navbar>
-	</div>
+			 <Navbar  className="navBar"  brand="  " toggleNavKey={0}>
+			    <CollapsibleNav eventKey={0}> {/* This is the eventKey referenced */}
+			      <Nav navbar>
+			      
+			       <NavItem  className="navLink" eventKey={1} href='#/home'>Home</NavItem>
+			        <NavItem className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
+			        <NavItem className="navLink" eventKey={2} href='#'>Nearby Posts</NavItem>
+			        <NavItem className="navLink" eventKey={2} href='#'>Past Posts</NavItem>
+			      </Nav>
+			      <Nav navbar right>
+			        <NavItem eventKey={1} href='#'>Logout</NavItem>
+			        
+			      </Nav>
+			    </CollapsibleNav>
+			  </Navbar>
+			</div>
     )}
 }
 
@@ -127,11 +126,12 @@ class LoginView extends React.Component {
 	}
 }
 
-class Home extends React.Component {
+class HomeView extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			queryResults : null
+			queryResults : null,
+			nearbyEvents: null  //does nada //
 		}
 	}
 
@@ -147,7 +147,13 @@ class Home extends React.Component {
 
 			<div className="homeView">
 				<Navigation/>
-				<GoogleMapMarked relayGMapObject={this._getGMapObject.bind(this)} userLatRelay={this.props.userLat} userLongRelay={this.props.userLong}/>
+				<GoogleMapMarked 
+					associatedComponent = 'HomeView'
+					homeView_map_items={this.props.localEventList}
+					relayGMapObject={this._getGMapObject.bind(this)} 
+					userLatRelay={this.props.userLat} 
+					userLongRelay={this.props.userLong}/>
+
 				<input type="text" ref="placesQuery"/>
 				
 				<ol>{this.state.queryResults}</ol>
@@ -253,10 +259,6 @@ class PostEvent extends React.Component{
 
 
 		})
-
-
-
-
 	} 
 
 	_hackMeTextArea(e){
@@ -372,7 +374,6 @@ class PostEvent extends React.Component{
 			<div className="hostEvent">
 				<Navigation/>
 
-				
 				<div className="host"> 
 					<form className="hostForm" onSubmit= {(e) => this._handleSubmit(e)}>
     					<input type='text' ref="eventName" className="eventForm" placeholder="Event Name" /> <br/>
@@ -495,10 +496,29 @@ export var MeetRouter = Parse.Router.extend({
 			function(pos){
 				//new Parse.Query() for events in area 
 				// Area determined by a <, > queries on events lat & lng 
+				
+				var southwestOfUser = new Parse.GeoPoint(pos.coords.latitude - 0.777, pos.coords.longitude - 0.767);
+				var northeastOfUser = new Parse.GeoPoint(pos.coords.latitude + 0.777, pos.coords.longitude + 0.767);
 
+				var query = new Parse.Query(PetEvent);
+					query.withinGeoBox("location_geopoint", southwestOfUser, northeastOfUser);
+					query.find(
+						{
+						  success: function(nearbyEvents) {
+						    
+						     React.render(
+						     	<HomeView 
+						     		userLat={pos.coords.latitude} 
+						     		userLong={pos.coords.longitude}
+						     		localEventList = {nearbyEvents}
+						     	/>, 
+						     	document.querySelector('.wrapper')
+						     )
 
+				  		}
+				});
+			
 
-				React.render(<Home userLat={pos.coords.latitude} userLong={pos.coords.longitude}/>, document.querySelector('.wrapper'))
 			},
 			function(error){
 				alert('geoloc not successful')

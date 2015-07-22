@@ -16,59 +16,75 @@ export class GoogleMapMarked extends React.Component {
   }
 
 
-  _selectedMarkerNotifiesThisComponent(mapPls){
-    console.log('GoogleMapMarked will now pass this to the parent UI component')
-    this.props.notifyParentUIComponent(mapPls)
+  _selectedMarkerNotifiesThisComponent(mapDataFromChild){
+    this.props.notifyParentUIComponent(mapDataFromChild)
   }
 
   _goGetMap(mapInChild){
     this.props.relayGMapObject(mapInChild)
   }
 
-  componentWillReceiveProps(newProps){
-    console.log('new props, bits')
-    console.log(newProps)
-
-
-    switch (newProps.associatedComponent) {
-      case ("PostEvent"):
-        this._renderMapMarkers(newProps.postEvent_map_items) ;
-        break
-      case("Home"):
-        this._renderMapMarkers(newProps.petEvents_map_items);
-        break
-      default:
-        throw ('no associated-component was passed to render the map markers')
-        break
-    }
+  componentDidMount(){
+    console.log('**** mounted props ****')
+    console.log(this.props)
+    this._renderMapMarkers(this.props.homeView_map_items,this.props.associatedComponent)
   }
 
-  _renderMapMarkers(gmapObjects){
-    
-    var resultMarkComponents = gmapObjects.map( (gmap) => {
-      return <NewEventMark 
-        lat={gmap.geometry.location.A} 
-        lng={gmap.geometry.location.F} mapData={gmap}  
-        alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
 
-        zoom={12}
-      />
+  componentWillReceiveProps(newProps){
+    this._renderMapMarkers(newProps.postEvent_map_items, newProps.associatedComponent) ;
+     
+  }
+
+  _renderMapMarkers(objectsWithGeoData, eventType){
+    console.log(`MAPMARKERS-should be rendering...`)
+    console.log(objectsWithGeoData)
+    console.log(eventType)
+    console.log('------------------------')
+    var resultMarkComponents = objectsWithGeoData.map( (obj) => {
+      
+      switch (eventType){
+        case 'PostEvent':
+          //component's mapData-prop expects a googleMap object
+          var gmap = obj;
+
+          return ( 
+            <NewEventMark 
+              lat={gmap.geometry.location.A} 
+              lng={gmap.geometry.location.F} 
+              mapData={gmap}  
+              alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
+              zoom={12}
+            />
+          )
+          break;
+
+        case 'HomeView':
+          //component's mapData-prop expects a Parse Model
+            var parseModel = obj
+            console.log(parseModel)
+
+            console.log(parseModel.get('location_lat'))
+            console.log(parseModel.get('location_lat'))
+
+          return(
+            <PetEventMark 
+              lat={parseModel.get('location_lat')} 
+              lng={parseModel.get('location_lng')} 
+              mapData={parseModel}  
+              alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
+              zoom={12}
+            />
+          )
+          break;
+      }
+
     })
 
     this.setState({
       newShitOnTheMap: resultMarkComponents
     })
   }
-
-  // _renderConfirmedEventMarks(){
-  //     console.log(eventModel) // please good
-  //     var postMarkComponents = gmapObjects.map( (gmap) =>{
-  //       return <PetEventMark 
-  //               lat={gmap.geometry.location.A} 
-  //               lng={gmap.geometry.location.F}  
-  //               zoom={12} />
-  //   })     
-  // }
 
   render() {
 
@@ -100,7 +116,7 @@ class UserLocation extends React.Component {
           height: K_HEIGHT,
           left: -K_WIDTH / 2,
           top: -K_HEIGHT / 2,
-          border: '3px solid tomato',
+          border: '3px solid #66d9c9',
           borderRadius: K_HEIGHT,
           backgroundColor: '#fff',
           textAlign: 'center',
@@ -115,7 +131,22 @@ class UserLocation extends React.Component {
   render() {
     return (
        <div style={this.stylez}>
-           &#8796;
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
+              viewBox="0 0 50 50" enable-background="new 0 0 50 50" >
+              <g>
+                <path fill="#66d9c9" d="M22.6,34.8c0,2.4,0,4.8,0,7.2c-3.6,0-7.2,0-10.8,0c0-0.1,0-0.2,0-0.3c0-5.2,0-10.3,0-15.5
+                  c0-0.6,0.2-1,0.7-1.4c2.1-1.9,4.2-3.9,6.3-5.8c1.9-1.7,3.9-3.5,5.8-5.3c0.4-0.3,0.6-0.3,1,0c4,3.7,8,7.3,12,11
+                  c0.4,0.4,0.7,0.8,0.7,1.4c0,5.2,0,10.3,0,15.5c0,0.1,0,0.2,0,0.3c-3.6,0-7.2,0-10.8,0c0-2.4,0-4.8,0-7.2
+                  C25.8,34.8,24.3,34.8,22.6,34.8z"/>
+                <path fill="#66d9c9" d="M7.7,25.2c-0.4,0-0.8,0-1.2,0c-0.1,0-0.2-0.1-0.3-0.2c0.1-0.1,0.1-0.2,0.2-0.2c1.7-1.6,3.5-3.3,5.3-4.9
+                  c2.8-2.6,5.6-5.3,8.4-7.9c1.5-1.4,3-2.8,4.5-4.3c0.4-0.3,0.7-0.3,1.1,0c2.9,2.7,5.8,5.4,8.7,8.2c3,2.9,6.2,5.8,9.2,8.7
+                  c0.2,0.2,0.2,0.3,0.3,0.5c-0.2,0-0.3,0.1-0.6,0.1c-0.7,0-1.4,0-2.1,0c-0.5,0-0.9-0.2-1.2-0.6c-4.7-4.3-9.3-8.7-14-12.9
+                  c-0.1-0.1-0.2-0.2-0.3-0.2c-0.3-0.3-0.7-0.3-1,0c-1,0.9-2.1,1.9-3,2.8c-3.8,3.5-7.6,7.1-11.5,10.5c-0.3,0.3-0.8,0.5-1.3,0.5
+                  C8.4,25.2,8,25.2,7.7,25.2L7.7,25.2z"/>
+              </g>
+          </svg>
+
+
        </div>
     );
   }
@@ -149,13 +180,8 @@ class PetEventMark extends React.Component {
 
   _handleClick(e){
       e.preventDefault()
-
-      window.location.hash = '#/eventDetail/${this.props.eventModel.id}'
-      // petRouter.navigate(`eventDetail/${this.props.eventModel.id}`, {
-      //             trigger: true
-      //         })
-
-
+ 
+     window.location.hash = '#/eventDetail/${eventModel.id}'
   }
 
 
