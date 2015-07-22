@@ -376,7 +376,7 @@ class PostEvent extends React.Component{
 				<div className="host"> 
 					<form className="hostForm" onSubmit= {(e) => this._handleSubmit(e)}>
     					<input type='text' ref="eventName" className="eventForm" placeholder="Event Name" /> <br/>
-    					<input type='text' ref="eventLocation" className="eventForm" placeholder="Event Location" /> <button className="btn btn-default btn-sm" onClick={this._handlePlaceSearch.bind(this)}> Search </button><br/>
+    					<input type='text' ref="eventLocation" className="eventForm" placeholder="Event Location" /> <button className="btn eventButton btn-sm" onClick={this._handlePlaceSearch.bind(this)}> Search </button><br/>
     					<table className="table table-hover">
     						 <caption>Select Location on Map</caption>
 						      <thead>

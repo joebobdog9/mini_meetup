@@ -61,10 +61,13 @@ export class GoogleMapMarked extends React.Component {
   }
 
   // _renderConfirmedEventMarks(){
-  //   console.log(eventModel) // please good
-  //   return <PetEventMark lat={29.777070} lng={-95.435494}  zoom={12} />
-
-
+  //     console.log(eventModel) // please good
+  //     var postMarkComponents = gmapObjects.map( (gmap) =>{
+  //       return <PetEventMark 
+  //               lat={gmap.geometry.location.A} 
+  //               lng={gmap.geometry.location.F}  
+  //               zoom={12} />
+  //   })     
   // }
 
   render() {
