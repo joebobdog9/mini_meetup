@@ -27,63 +27,64 @@ export class GoogleMapMarked extends React.Component {
   componentDidMount(){
     console.log('**** mounted props ****')
     console.log(this.props)
-    this._renderMapMarkers(this.props.homeView_map_items,this.props.associatedComponent)
+    this._renderMapMarkers(this.props.map_items,this.props.associatedComponent)
   }
 
 
   componentWillReceiveProps(newProps){
-    this._renderMapMarkers(newProps.postEvent_map_items, newProps.associatedComponent) ;
-     
+    this._renderMapMarkers(newProps.map_items, newProps.associatedComponent) ;
   }
 
   _renderMapMarkers(objectsWithGeoData, eventType){
-    console.log(`MAPMARKERS-should be rendering...`)
+    // console.log(`MAPMARKERS-should be rendering...`)
     console.log(objectsWithGeoData)
-    console.log(eventType)
-    console.log('------------------------')
-    var resultMarkComponents = objectsWithGeoData.map( (obj) => {
-      
-      switch (eventType){
-        case 'PostEvent':
-          //component's mapData-prop expects a googleMap object
-          var gmap = obj;
+    // console.log(eventType)
+    // console.log('------------------------')
+    if( objectsWithGeoData && objectsWithGeoData.length ){ 
+      var resultMarkComponents = objectsWithGeoData.map( (obj) => {
+        
+        switch (eventType){
+          case 'PostEvent':
+            //component's mapData-prop expects a googleMap object
+            var gmap = obj;
 
-          return ( 
-            <NewEventMark 
-              lat={gmap.geometry.location.A} 
-              lng={gmap.geometry.location.F} 
-              mapData={gmap}  
-              alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
-              zoom={12}
-            />
-          )
-          break;
+            return ( 
+              <NewEventMark 
+                lat={gmap.geometry.location.A} 
+                lng={gmap.geometry.location.F} 
+                mapData={gmap}  
+                alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
+                zoom={12}
+              />
+            )
+            break;
 
-        case 'HomeView':
-          //component's mapData-prop expects a Parse Model
-            var parseModel = obj
-            console.log(parseModel)
+          case 'HomeView':
+            //component's mapData-prop expects a Parse Model
+              var parseModel = obj
+              console.log(parseModel)
 
-            console.log(parseModel.get('location_lat'))
-            console.log(parseModel.get('location_lat'))
+              console.log(parseModel.get('location_lat'))
+              console.log(parseModel.get('location_lat'))
 
-          return(
-            <PetEventMark 
-              lat={parseModel.get('location_lat')} 
-              lng={parseModel.get('location_lng')} 
-              mapData={parseModel}  
-              alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
-              zoom={12}
-            />
-          )
-          break;
-      }
+            return(
+              <PetEventMark 
+                lat={parseModel.get('location_lat')} 
+                lng={parseModel.get('location_lng')} 
+                mapData={parseModel}  
+                alertVenueSelection = {this._selectedMarkerNotifiesThisComponent.bind(this)}
+                zoom={12}
+              />
+            )
+            break;
+        }
 
-    })
+      })
 
-    this.setState({
-      newShitOnTheMap: resultMarkComponents
-    })
+      this.setState({
+        newShitOnTheMap: resultMarkComponents
+      })
+    }
   }
 
   render() {
@@ -157,6 +158,8 @@ var P_WIDTH = 20 , P_HEIGHT = 20
 class PetEventMark extends React.Component {
   constructor(props) {
     super(props);
+
+    this.eventModel = this.props.mapData
     this.stylez = {
           position: 'absolute',
           width: K_WIDTH,
@@ -180,8 +183,8 @@ class PetEventMark extends React.Component {
 
   _handleClick(e){
       e.preventDefault()
- 
-     window.location.hash = '#/eventDetail/${eventModel.id}'
+     console.log(this.eventModel)
+     window.location.hash = `#/eventDetail/${this.eventModel.id}`
   }
 
 

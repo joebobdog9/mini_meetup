@@ -33,7 +33,7 @@ import  {getLatLonDistance} from './distance.js'
 
 
 
-
+console.log('update')
 
 
 // https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
@@ -142,14 +142,14 @@ class HomeView extends React.Component {
 
 
 	render() {
-		
+		console.log(this.props.localEventList)
 		return(
 
 			<div className="homeView">
 				<Navigation/>
 				<GoogleMapMarked 
 					associatedComponent = 'HomeView'
-					homeView_map_items={this.props.localEventList}
+					map_items={this.props.localEventList}
 					relayGMapObject={this._getGMapObject.bind(this)} 
 					userLatRelay={this.props.userLat} 
 					userLongRelay={this.props.userLong}/>
@@ -171,7 +171,7 @@ class PostEvent extends React.Component{
 		this.state = {
 			fixMePls: "",
 			placesAsDOMNodes: null,
-			searchedPlaces: null
+			searchedPlaces: []
 		}
 	}
 
@@ -255,6 +255,7 @@ class PostEvent extends React.Component{
 
 		petEventInstance.save().then((savedModel)=>{
 				alert('You saved that shit!')
+				console.log(savedModel)
 				window.location.hash = `#/eventDetail/${savedModel.id}`
 
 
@@ -264,7 +265,7 @@ class PostEvent extends React.Component{
 	_hackMeTextArea(e){
 		console.log(e.target.value)
 		this.setState({
-			fixMePls: e.target.value
+			descriptionInput: e.target.value
 		})
 	}
 
@@ -361,14 +362,10 @@ class PostEvent extends React.Component{
 			searchedPlaces: filteredSingleMap,
 			selectedVenue: filteredSingleMap[0]
 		})
-
-
-
-
 	}
 
 	render() {
-		console.log
+		console.log(this.state.searchedPlaces)
 		return(
 
 			<div className="hostEvent">
@@ -394,7 +391,7 @@ class PostEvent extends React.Component{
     					<input type='text' ref="eventLocationDetails" className="eventForm" placeholder="Event Location Details" /><br/>
     					<GoogleMapMarked 
     						associatedComponent = "PostEvent"
-    						postEvent_map_items={this.state.searchedPlaces}
+    						map_items = {this.state.searchedPlaces}
     						className="hostMap" 
     						relayGMapObject={this._getGMapObject.bind(this)} 
     						userLatRelay={this.props.userLat} 
@@ -405,7 +402,7 @@ class PostEvent extends React.Component{
 		    					type='textarea' 
 		    					ref="eventDescription" 
 		    					onChange={(e)=>{this._hackMeTextArea(e)} } 
-		    					value={this.state.fixMePls} className="eventDescription" 
+		    					value={this.state.descriptionInput} className="eventDescription" 
 		    					placeholder='Enter your description here...' /><br/>
 		    			<input type="date" ref="eventDate"className="eventDate"/>
 		    			<input type="time" ref="eventTime" className="eventDate"/>
