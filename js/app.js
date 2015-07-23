@@ -1,5 +1,6 @@
 
 import {Promise} from 'es6-promise'
+import moment from 'moment'
 import $ from 'jquery'
 import Backbone from 'backbone'
 import React from 'react'
@@ -34,6 +35,7 @@ import  {getLatLonDistance} from './distance.js'
 
 
 
+
 // https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
 
 Parse = window.Parse
@@ -55,16 +57,11 @@ class Navigation extends React.Component {
 			 <Navbar  className="navBar"  brand="  " toggleNavKey={0}>
 			    <CollapsibleNav eventKey={0}> {/* This is the eventKey referenced */}
 			      <Nav navbar>
+			       		<NavItem  className="navLink" eventKey={1} href='#/home'>Home</NavItem>
+			       		<NavItem className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
+			       		<NavItem className="navLink" eventKey={1} href='#/login'>Login</NavItem>
+			      </Nav>
 			      
-			       <NavItem  className="navLink" eventKey={1} href='#/home'>Home</NavItem>
-			        <NavItem className="navLink" eventKey={1} href='#/postEvent'>Post</NavItem>
-			        <NavItem className="navLink" eventKey={2} href='#'>Nearby Posts</NavItem>
-			        <NavItem className="navLink" eventKey={2} href='#'>Past Posts</NavItem>
-			      </Nav>
-			      <Nav navbar right>
-			        <NavItem eventKey={1} href='#'>Logout</NavItem>
-			        
-			      </Nav>
 			    </CollapsibleNav>
 			  </Navbar>
 			</div>
@@ -115,7 +112,8 @@ class LoginView extends React.Component {
 					<form className="formLog" onSubmit={(e) => this._signupOrLogin(e)}>
     					<Input type='email'ref="userEmail"  placeholder='Enter Email' className='logEmail' />
     					<Input type='password' ref="userPassword" placeholder='Enter Password' className='logPass' />
-    					<Button  type="submit" href='#home' bsSize="small" className="joinButton" > Submit  </Button>
+    					<Button  type="submit" href='#home' bsSize="small" className="joinButton" > Submit  
+ 						</Button>
     				</form>
     		</div>
     	
@@ -247,7 +245,7 @@ class PostEvent extends React.Component{
 
 
 		petEventInstance.save().then((savedModel)=>{
-				alert('You saved that shit!')
+			
 				window.location.hash = `#/eventDetail/${savedModel.id}`
 
 
@@ -405,10 +403,20 @@ class PostEvent extends React.Component{
 class EventDetail extends React.Component{
 		constructor(props) {
 		super(props)
+		var rightMeow = this.props.eventModel.get('date')
+		this.myDateString = moment(rightMeow).format('YYYY-MMMM-dddd')
+		
+		// var year = this.props.eventModel.get('date').getFullYear()
+		// var month = this.props.eventModel.get('date').getMonth() + 1
+		// var day = this.props.eventModel.get('date').getDay()
+		// var hour = this.props.eventModel.get('date').getHours()
+		// var minutes = this.props.eventModel.get('date').getMinutes()
+
+		// this.myDateString = `${year} ${month} ${day} ${hour} ${minutes}`
 	}
 		render() {
 		
-		
+		console.log(this.props.eventModel)
 		return(
 
 			<div className="">
@@ -418,7 +426,7 @@ class EventDetail extends React.Component{
 						<ListGroupItem className="postTitle"> <span className="subHead"> {this.props.eventModel.get('title')} </span></ListGroupItem>
     					<ListGroupItem header='Location' className="postDetails"> {this.props.eventModel.get('location_venue')} </ListGroupItem>
     					<ListGroupItem header='Location Details' className="postDetails"> {this.props.eventModel.get('locationDetails')} </ListGroupItem>
-    					<ListGroupItem header='Date'className="postDetails"> {this.props.eventModel.get('date')} </ListGroupItem>
+    					<ListGroupItem header='Date'className="postDetails"> {this.myDateString} </ListGroupItem>
 						<ListGroupItem className="postDescription">{this.props.eventModel.get('description')}  </ListGroupItem>						
 				</div>
 			</div>	
@@ -434,6 +442,7 @@ class EventDetail extends React.Component{
 export var MeetRouter = Parse.Router.extend({
     
     initialize: function() {
+    
         Parse.history.start()
     },
 

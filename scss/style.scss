@@ -98,8 +98,11 @@ img {
 */
 
 .navbar-brand{
-    background-image: url(../images/petset_50w.svg);
+    background-image: url(../images/petset_logoW.svg);
     background-repeat: no-repeat;
+    margin-bottom: 1rem;
+    width: 5rem;
+    height: 5rem;
 
 }
 
@@ -151,7 +154,7 @@ img {
   
     padding-left: 2rem;
     border: none;
-    color: #00bfa5;
+    color:#999;
     max-width: 350px;
     max-height: 100px;
     font-style: italic;
@@ -233,7 +236,7 @@ img {
 .logPass{
    margin:auto;
    max-width: 300px;
-   color: #00bfa5;
+   color: #999;
    border: 1px solid #00bfa5;
 
 }
@@ -241,7 +244,7 @@ img {
 .logEmail{
   margin:auto;
    max-width: 300px;
-   color: #00bfa5;
+   color: #999;
    border: 1px solid #00bfa5;
 
 }
@@ -313,7 +316,7 @@ img {
 
     .eventForm{
         border: 2px solid #66d9c9;
-        color:  #00695c;
+        color:  #999;
         max-width: 85%;
         margin-top: 1rem;
         margin-bottom: 1rem;
@@ -323,7 +326,7 @@ img {
 
     .eventDescription{
         border: 2px solid #66d9c9;
-        color:  #00695c;
+        color:  #999;
         width: 400px;
         height: 200px;
         border-radius: 5px;
