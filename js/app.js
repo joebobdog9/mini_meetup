@@ -404,7 +404,8 @@ class EventDetail extends React.Component{
 		constructor(props) {
 		super(props)
 		var rightMeow = this.props.eventModel.get('date')
-		this.myDateString = moment(rightMeow).format('YYYY-MMMM-dddd')
+		this.myDateString = moment(rightMeow).format('dddd-MMMM-YYYY')
+		this.myTimeString = moment(rightMeow).format('hh:mm a')
 		
 		// var year = this.props.eventModel.get('date').getFullYear()
 		// var month = this.props.eventModel.get('date').getMonth() + 1
@@ -426,7 +427,7 @@ class EventDetail extends React.Component{
 						<ListGroupItem className="postTitle"> <span className="subHead"> {this.props.eventModel.get('title')} </span></ListGroupItem>
     					<ListGroupItem header='Location' className="postDetails"> {this.props.eventModel.get('location_venue')} </ListGroupItem>
     					<ListGroupItem header='Location Details' className="postDetails"> {this.props.eventModel.get('locationDetails')} </ListGroupItem>
-    					<ListGroupItem header='Date'className="postDetails"> {this.myDateString} </ListGroupItem>
+    					<ListGroupItem header='Date'className="postDetails"> {this.myDateString} {this.myTimeString} </ListGroupItem>
 						<ListGroupItem className="postDescription">{this.props.eventModel.get('description')}  </ListGroupItem>						
 				</div>
 			</div>	
