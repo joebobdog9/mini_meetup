@@ -25,8 +25,6 @@ export class GoogleMapMarked extends React.Component {
   }
 
   componentDidMount(){
-    console.log('**** mounted props ****')
-    console.log(this.props)
     this._renderMapMarkers(this.props.map_items,this.props.associatedComponent)
   }
 
@@ -36,10 +34,7 @@ export class GoogleMapMarked extends React.Component {
   }
 
   _renderMapMarkers(objectsWithGeoData, eventType){
-    // console.log(`MAPMARKERS-should be rendering...`)
-    console.log(objectsWithGeoData)
-    // console.log(eventType)
-    // console.log('------------------------')
+
     if( objectsWithGeoData && objectsWithGeoData.length ){ 
       var resultMarkComponents = objectsWithGeoData.map( (obj) => {
         
@@ -62,11 +57,7 @@ export class GoogleMapMarked extends React.Component {
           case 'HomeView':
             //component's mapData-prop expects a Parse Model
               var parseModel = obj
-              console.log(parseModel)
-
-              console.log(parseModel.get('location_lat'))
-              console.log(parseModel.get('location_lat'))
-
+             
             return(
               <PetEventMark 
                 lat={parseModel.get('location_lat')} 
@@ -183,7 +174,7 @@ class PetEventMark extends React.Component {
 
   _handleClick(e){
       e.preventDefault()
-     console.log(this.eventModel)
+ 
      window.location.hash = `#/eventDetail/${this.eventModel.id}`
   }
 
@@ -256,9 +247,6 @@ class NewEventMark extends React.Component {
       e.preventDefault()
   
       this.props.mapData
-      console.log(this.props.mapData)
-
-      console.log(this)
 
       this.stylez.backgroundColor = 'yellow';
 

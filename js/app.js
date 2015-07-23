@@ -33,8 +33,6 @@ import  {getLatLonDistance} from './distance.js'
 
 
 
-console.log('update')
-
 
 // https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBhFWy-HRucvAqlLb7d-BurCCMsnOxzWsU
 
@@ -136,13 +134,11 @@ class HomeView extends React.Component {
 	}
 
 	_getGMapObject(map){
-		console.log('Top-Level')
 		this.gmap = map
 	}
 
 
 	render() {
-		console.log(this.props.localEventList)
 		return(
 
 			<div className="homeView">
@@ -209,8 +205,6 @@ class PostEvent extends React.Component{
 		petEventInstance.set( 'locationDetails' , eventLocationDetailsVal)
 		petEventInstance.set( 'description' , eventDescriptionVal)
 
-		console.log(eventTimeVal)
-
 
 		var dateStringArray = eventDateVal.split('-')
 		var dateNumberArray = dateStringArray.map( (dateString) => {
@@ -224,7 +218,6 @@ class PostEvent extends React.Component{
 
 		})
 
-		console.log(timeNumberArray)
 		var jsDateObject = new Date(
 			dateNumberArray[0],
 			dateNumberArray[1]-1,
@@ -255,7 +248,6 @@ class PostEvent extends React.Component{
 
 		petEventInstance.save().then((savedModel)=>{
 				alert('You saved that shit!')
-				console.log(savedModel)
 				window.location.hash = `#/eventDetail/${savedModel.id}`
 
 
@@ -263,7 +255,6 @@ class PostEvent extends React.Component{
 	} 
 
 	_hackMeTextArea(e){
-		console.log(e.target.value)
 		this.setState({
 			descriptionInput: e.target.value
 		})
@@ -292,7 +283,6 @@ class PostEvent extends React.Component{
 	}
 
 	_getGMapObject(map){
-		console.log('Top-Level')
 		this.gmap = map
 	}
 
@@ -302,11 +292,9 @@ class PostEvent extends React.Component{
 	
 		var queryName = this.refs.eventLocation.getDOMNode().value
 
-		console.log(queryName)
 
 		this.__getPlaces(this.gmap, queryName)
 			.then(function(returnedResults){
-				console.log(returnedResults)
 
 				this.__showVenues(returnedResults)
 
@@ -331,7 +319,6 @@ class PostEvent extends React.Component{
           };
 
         service.nearbySearch(request, (searchResults, status)=>{
-        	console.log(searchResults)
             return jqPromise.resolve(searchResults)
 
         })
@@ -340,7 +327,6 @@ class PostEvent extends React.Component{
 	}
 	
 	_handleVenueSelection(selectedGmap){
-		console.log(selectedGmap)
 		var filteredSingleMap = this.state.searchedPlaces.filter((resultGmap) =>{
 			
 			return selectedGmap.id === resultGmap.id 
@@ -365,7 +351,6 @@ class PostEvent extends React.Component{
 	}
 
 	render() {
-		console.log(this.state.searchedPlaces)
 		return(
 
 			<div className="hostEvent">
@@ -449,7 +434,6 @@ class EventDetail extends React.Component{
 export var MeetRouter = Parse.Router.extend({
     
     initialize: function() {
-        console.log('app is routing')
         Parse.history.start()
     },
 
@@ -479,7 +463,6 @@ export var MeetRouter = Parse.Router.extend({
 
 	postEvent: function(){
 		navigator.geolocation.getCurrentPosition(function(data){
-			console.log(data);
 			data.coords.latitude 
 			data.coords.longitude
 			React.render(<PostEvent userLat={data.coords.latitude} userLong={data.coords.longitude}/>, document.querySelector('.wrapper'))
